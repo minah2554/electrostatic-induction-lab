@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>정전기 유도 현상 가상 실험실</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzIyZDNlZSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzYzNjZmMSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTM0IDYgTDE0IDM2IEgyOCBMMjQgNTggTDUwIDI2IEgzNSBaIiBmaWxsPSIjZmZmZmZmIi8+PC9zdmc+" />
+<meta name="app-version" content="1.0.0" />
+<meta name="description" content="MINARI STUDIO · 정전기 유도 현상 가상 실험실 - 중학교 과학 수업용 인터랙티브 웹앱" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&family=Jua&display=swap">
+<style>
+  /* BC카드체 Bold (눈누 noonnu.cc 상업적 이용 무료 배포본) */
+  @font-face {
+    font-family: 'BcCardFont';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.1/BCcardL.woff') format('woff');
+    font-weight: 300; font-display: swap;
+  }
+  @font-face {
+    font-family: 'BcCardFont';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.1/BCcardB.woff') format('woff');
+    font-weight: 700; font-display: swap;
+  }
+  * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+  html, body { margin:0; padding:0; font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    word-break: keep-all; overflow-wrap: break-word; background:#eef1f6; }
+  #svgWrap { touch-action: none; }
+
+  .lab-bg {
+    background-color:#0a0f1e;
+    background-image:
+      radial-gradient(circle at 25% 18%, rgba(34,211,238,0.16), transparent 55%),
+      radial-gradient(circle at 82% 78%, rgba(129,140,248,0.14), transparent 55%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 42px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 42px);
+  }
+  .glass-dark { background: rgba(15,23,42,0.62); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border:1px solid rgba(148,163,184,0.18); }
+  .glass-bubble { background: rgba(8,15,30,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border:1px solid rgba(56,189,248,0.3); }
+
+  .tab-btn { color:#64748b; transition:.18s; }
+  .tab-btn.active { background:#ffffff; color:#4338ca; box-shadow:0 1px 4px rgba(15,23,42,0.12); }
+
+  .obj-card { transition:.15s; }
+  .obj-card.active { border-color:#6366f1 !important; background:#eef2ff; box-shadow:0 0 0 3px rgba(99,102,241,0.18); }
+
+  .charge-chip { transition:.15s; }
+  .charge-chip.active-neg { background:#2563eb; color:#fff; border-color:#1d4ed8; box-shadow:0 4px 14px rgba(37,99,235,.35); }
+  .charge-chip.active-pos { background:#dc2626; color:#fff; border-color:#b91c1c; box-shadow:0 4px 14px rgba(220,38,38,.35); }
+  .charge-chip.active-neu { background:#475569; color:#fff; border-color:#334155; box-shadow:0 4px 14px rgba(71,85,105,.3); }
+
+  .scrollbar-thin::-webkit-scrollbar{ width:6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:3px; }
+
+  .slide-in { animation: slideIn .3s ease-out; }
+  @keyframes slideIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+  .correct-flash { animation: flashGreen .6s ease; }
+  .wrong-flash { animation: flashRed .6s ease; }
+  @keyframes flashGreen { 0%{background:#bbf7d0;} 100%{background:transparent;} }
+  @keyframes flashRed { 0%{background:#fecaca;} 100%{background:transparent;} }
+  @keyframes floatGlow { 0%,100%{ filter:drop-shadow(0 0 3px rgba(34,211,238,.5)); } 50%{ filter:drop-shadow(0 0 9px rgba(34,211,238,.85)); } }
+  .lab-floor { animation: floatGlow 2.6s ease-in-out infinite; }
+
+  /* 커스텀 슬라이더 */
+  input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:999px;
+    background: linear-gradient(90deg,#c7d2fe,#6366f1); outline:none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:20px; height:20px; border-radius:50%;
+    background:#fff; border:3px solid #4f46e5; box-shadow:0 2px 6px rgba(79,70,229,.45); cursor:pointer; margin-top:-7px; }
+  input[type=range]::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:#fff; border:3px solid #4f46e5;
+    box-shadow:0 2px 6px rgba(79,70,229,.45); cursor:pointer; }
+  input[type=range]::-moz-range-track { height:6px; border-radius:999px; background: linear-gradient(90deg,#c7d2fe,#6366f1); }
+
+  /* 토글 스위치 */
+  .toggle { position:relative; display:inline-flex; align-items:center; cursor:pointer; }
+  .toggle input { position:absolute; opacity:0; width:0; height:0; }
+  .toggle .track { width:38px; height:21px; background:#cbd5e1; border-radius:999px; position:relative; transition:.2s; flex-shrink:0; }
+  .toggle .thumb { position:absolute; top:2px; left:2px; width:17px; height:17px; border-radius:50%; background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.35); transition:.2s; }
+  .toggle input:checked + .track { background:#4f46e5; }
+  .toggle input:checked + .track .thumb { transform:translateX(17px); }
+
+  @media (max-width: 1023px) {
+    html, body { height:auto; }
+  }
+
+  /* ===== 지정 폰트 스타일 ===== */
+  .app-title { font-family:'Jua','Juache',sans-serif; font-size:18px; line-height:1.2; }
+  @media (max-width:420px) { .app-title { font-size:15px; } }
+  .hero-title { font-family:'BcCardFont',sans-serif; font-weight:700; font-size:28px; }
+  .sum-num { font-family:'BcCardFont',sans-serif; font-weight:700; font-size:clamp(22px,5.5vw,34px); line-height:1.15; }
+  .f-wm { font-family:'BcCardFont',sans-serif; font-weight:700; font-size:15px; color:#0f766e; letter-spacing:.01em; }
+</style>
+</head>
+<body class="w-full min-h-screen text-slate-800">
+
+<div class="w-full min-h-screen flex flex-col lg:h-screen">
+<div class="flex-1 w-full min-h-0 flex flex-col lg:flex-row lg:overflow-hidden bg-slate-100">
+
+  <!-- ===================== MAIN VIEW (dark lab) ===================== -->
+  <div class="relative w-full h-[60vh] min-h-[360px] lg:h-full lg:w-[60%] lab-bg overflow-hidden">
+
+    <!-- Header -->
+    <div class="absolute top-0 left-0 right-0 z-20 flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 glass-dark">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="shrink-0 w-9 h-9 rounded-xl overflow-hidden shadow-lg ring-1 ring-white/20">
+          <svg viewBox="0 0 64 64" class="w-full h-full">
+            <defs><linearGradient id="iconGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#6366f1"/>
+            </linearGradient></defs>
+            <rect width="64" height="64" fill="url(#iconGrad)"/>
+            <path d="M34 6 L14 36 H28 L24 58 L50 26 H35 Z" fill="#ffffff"/>
+          </svg>
+        </span>
+        <div class="min-w-0">
+          <h1 class="app-title font-bold leading-tight text-white truncate">정전기 유도 가상 실험실</h1>
+          <p class="text-[10px] sm:text-[11px] leading-tight text-slate-300 truncate">중2 과학 Ⅶ. 전기와 자기 · 전기를 띤 물체 근처에 가면?</p>
+        </div>
+      </div>
+      <button id="resetBtn" class="shrink-0 text-[11px] sm:text-xs font-bold text-white bg-gradient-to-br from-amber-400 to-orange-500 px-3 py-1.5 rounded-full shadow-md hover:brightness-110 active:scale-95 transition">↺ 초기화</button>
+    </div>
+
+    <!-- 비금속 안내 배지 -->
+    <div id="nonMetalBadge" class="hidden absolute top-14 sm:top-16 left-1/2 -translate-x-1/2 z-10 glass-dark rounded-full px-3 py-1.5 text-[11px] sm:text-xs font-bold text-amber-300">
+      ⚠️ 비금속(부도체)은 정전기 유도가 일어나지 않아요
+    </div>
+
+    <div id="svgWrap" class="w-full h-full flex items-center justify-center pt-14 pb-20 px-2">
+      <svg id="scene" viewBox="0 0 760 420" class="w-full h-full" style="max-width:100%;max-height:100%;">
+        <defs>
+          <linearGradient id="metalGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f8fafc"/>
+            <stop offset="45%" stop-color="#cbd5e1"/>
+            <stop offset="55%" stop-color="#94a3b8"/>
+            <stop offset="100%" stop-color="#e2e8f0"/>
+          </linearGradient>
+          <linearGradient id="rodGradNeg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#93c5fd"/><stop offset="50%" stop-color="#2563eb"/><stop offset="100%" stop-color="#93c5fd"/>
+          </linearGradient>
+          <linearGradient id="rodGradPos" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#fca5a5"/><stop offset="50%" stop-color="#dc2626"/><stop offset="100%" stop-color="#fca5a5"/>
+          </linearGradient>
+          <linearGradient id="rodGradNeu" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#e2e8f0"/><stop offset="50%" stop-color="#94a3b8"/><stop offset="100%" stop-color="#e2e8f0"/>
+          </linearGradient>
+          <clipPath id="objClip"></clipPath>
+          <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#fbbf24"/></marker>
+          <marker id="eArrowHead" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#38bdf8"/></marker>
+          <marker id="noArrowHead" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker>
+        </defs>
+
+        <!-- 실험대 바닥 -->
+        <line class="lab-floor" x1="40" y1="345" x2="720" y2="345" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>
+
+        <!-- 인력 화살표 -->
+        <g id="attractArrow" opacity="0">
+          <line id="attractLine" x1="0" y1="235" x2="0" y2="235" stroke="#fbbf24" stroke-width="3" stroke-dasharray="6 5" marker-end="url(#arrowHead)"/>
+          <text id="attractLabel" x="0" y="215" text-anchor="middle" font-size="15" font-weight="800" fill="#fbbf24">인력</text>
+        </g>
+
+        <!-- 전자 이동 화살표 -->
+        <g id="eMoveArrow" opacity="0">
+          <line id="eMoveLine" x1="0" y1="140" x2="0" y2="140" stroke="#38bdf8" stroke-width="3" marker-end="url(#eArrowHead)"/>
+          <text id="eMoveLabel" x="0" y="125" text-anchor="middle" font-size="13" font-weight="800" fill="#38bdf8">전자 이동</text>
+        </g>
+
+        <!-- 비금속 변화없음 표시 -->
+        <g id="noChangeMark" opacity="0">
+          <circle cx="0" cy="235" r="26" fill="none" stroke="#94a3b8" stroke-width="4"/>
+          <line x1="-18" y1="235" x2="18" y2="235" stroke="#94a3b8" stroke-width="4" transform="rotate(45 0 235)"/>
+        </g>
+
+        <!-- ===== 물체 그룹 (동적 생성) ===== -->
+        <g id="objectGroup"></g>
+        <text id="objectLabel" x="235" y="333" text-anchor="middle" font-size="15" font-weight="800" fill="#e2e8f0"></text>
+
+        <!-- ===== 대전체(막대) ===== -->
+        <g id="rodGroup" style="cursor:grab;">
+          <rect id="rodBar" x="-14" y="55" width="28" height="330" rx="14" fill="url(#rodGradNeg)" stroke="#1e3a8a" stroke-width="2"/>
+          <g id="rodChargeIcons"></g>
+          <text id="rodLabel" x="0" y="42" text-anchor="middle" font-size="14" font-weight="800" fill="#bae6fd">(−) 대전체</text>
+          <text x="0" y="400" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b">◂ 드래그 ▸</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Guide bubble -->
+    <div id="guideBubble" class="slide-in absolute left-2 right-2 sm:left-4 sm:right-4 sm:max-w-md bottom-2 sm:bottom-4 glass-bubble rounded-2xl px-4 py-3 shadow-xl text-[12.5px] sm:text-sm font-medium text-slate-100 leading-relaxed" style="word-break:keep-all;">
+      👋 물체와 대전체 종류를 선택하고, 거리를 조절해서 전자가 어떻게 움직이는지 관찰해 보세요!
+    </div>
+  </div>
+
+  <!-- ===================== RIGHT PANEL ===================== -->
+  <div class="w-full lg:w-[40%] lg:h-full flex flex-col bg-white lg:overflow-hidden">
+
+    <!-- Tabs -->
+    <div class="shrink-0 flex gap-1 p-1.5 m-2 mb-0 rounded-xl bg-slate-100">
+      <button data-tab="guide" class="tab-btn active flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold">🔍 관찰</button>
+      <button data-tab="summary" class="tab-btn flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold">📘 원리</button>
+      <button data-tab="quiz" class="tab-btn flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold">✏️ 퀴즈</button>
+    </div>
+
+    <!-- Tab contents -->
+    <div class="lg:flex-1 lg:overflow-y-auto scrollbar-thin p-3 sm:p-4 space-y-3">
+
+      <!-- GUIDE TAB -->
+      <div id="tab-guide" class="space-y-3">
+        <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-3.5">
+          <p class="text-[11px] font-bold text-indigo-600 mb-1">현재 상태</p>
+          <p id="statusText" class="text-[13px] sm:text-sm font-semibold text-slate-800 leading-relaxed">대전되지 않은 물체가 가까이 있어요. 아무 변화가 없습니다.</p>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200">
+            <p class="text-[10.5px] text-slate-500 font-bold leading-tight">대전체와<br/>가까운 쪽</p>
+            <p id="nearChargeText" class="sum-num text-slate-700 mt-0.5">중성</p>
+          </div>
+          <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200">
+            <p class="text-[10.5px] text-slate-500 font-bold leading-tight">대전체와<br/>먼 쪽</p>
+            <p id="farChargeText" class="sum-num text-slate-700 mt-0.5">중성</p>
+          </div>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200">
+          <p class="text-[11px] text-slate-500 font-bold mb-1.5">인력의 세기</p>
+          <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+            <div id="angleBar" class="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-150" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-[12px] sm:text-xs text-amber-800 leading-relaxed">
+          💡 <b>미나리쌤 Tip</b> — 대전체를 물체 쪽으로 드래그해서 가까이 가져가 보세요! 금속 물체와 비금속 물체를 번갈아 선택하면서 반응이 다른 까닭을 비교해 보세요.
+        </div>
+      </div>
+
+      <!-- SUMMARY TAB -->
+      <div id="tab-summary" class="hidden space-y-3">
+        <div class="bg-white border-2 border-slate-200 rounded-2xl p-3.5">
+          <p class="font-bold text-sm mb-1">🧲 정전기 유도란?</p>
+          <p class="text-[12.5px] sm:text-xs text-slate-600 leading-relaxed">금속처럼 전자가 자유롭게 움직일 수 있는 물체(도체)에 대전체를 가까이 하면, 대전체와 <b>가까운 쪽</b>에는 <b>다른 종류</b>의 전하가, <b>먼 쪽</b>에는 <b>같은 종류</b>의 전하가 나타나는 현상이에요.</p>
+        </div>
+        <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-3.5">
+          <p class="font-bold text-sm text-blue-700 mb-1">⚫ (−)대전체가 가까이 오면</p>
+          <p class="text-[12.5px] sm:text-xs text-slate-700 leading-relaxed">척력으로 자유전자가 <b>먼 쪽</b>으로 밀려남 → 가까운 쪽 <b class="text-red-500">(+)</b>, 먼 쪽 <b class="text-blue-600">(−)</b> → 인력 발생 → 물체가 끌려옴</p>
+        </div>
+        <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-3.5">
+          <p class="font-bold text-sm text-red-700 mb-1">🔴 (+)대전체가 가까이 오면</p>
+          <p class="text-[12.5px] sm:text-xs text-slate-700 leading-relaxed">인력으로 자유전자가 <b>가까운 쪽</b>으로 끌려감 → 가까운 쪽 <b class="text-blue-600">(−)</b>, 먼 쪽 <b class="text-red-500">(+)</b> → 인력 발생 → 물체가 끌려옴</p>
+        </div>
+        <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3.5">
+          <p class="font-bold text-sm mb-1">🪵 비금속(부도체)은 왜 안 끌려올까?</p>
+          <p class="text-[12.5px] sm:text-xs text-slate-600 leading-relaxed">유리컵, 스티로폼 컵 같은 비금속은 자유롭게 움직이는 전자가 거의 없어서, 대전체를 가까이 해도 전하가 이동하지 못해요. 그래서 정전기 유도가 일어나지 않고 끌려오지 않습니다.</p>
+        </div>
+        <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3.5">
+          <p class="font-bold text-sm mb-1">📏 끌려오는 정도는?</p>
+          <p class="text-[12.5px] sm:text-xs text-slate-600 leading-relaxed">금속의 경우, 대전체와의 <b>거리가 가까울수록</b>, 문지른 횟수(전하량)가 <b>많을수록</b> 인력이 세져서 더 크게 끌려와요.</p>
+        </div>
+      </div>
+
+      <!-- QUIZ TAB -->
+      <div id="tab-quiz" class="hidden space-y-4">
+        <div id="quiz1" class="bg-white border-2 border-slate-200 rounded-2xl p-3.5">
+          <p class="text-xs font-bold text-indigo-600 mb-1">Q1</p>
+          <p class="text-[13px] sm:text-sm font-semibold mb-3 leading-relaxed">(−)전하를 띤 막대를 알루미늄 캔에 가까이 가져갔을 때, 캔에서 막대와 <b>가까운 쪽</b>과 <b>먼 쪽</b>이 띠는 전하로 옳은 것은?</p>
+          <div class="space-y-2" data-quiz="1">
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="true">① 가까운 쪽 (+), 먼 쪽 (−)</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">② 가까운 쪽 (−), 먼 쪽 (+)</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">③ 캔 전체가 모두 (−)</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">④ 변화가 없다</button>
+          </div>
+          <p class="quiz-explain hidden mt-2 text-[12px] sm:text-xs bg-slate-50 rounded-lg p-2 text-slate-600 leading-relaxed"></p>
+        </div>
+
+        <div id="quiz2" class="bg-white border-2 border-slate-200 rounded-2xl p-3.5">
+          <p class="text-xs font-bold text-indigo-600 mb-1">Q2</p>
+          <p class="text-[13px] sm:text-sm font-semibold mb-3 leading-relaxed">(−)전하를 띤 막대를 <b>유리컵</b>에 아주 가까이 가져갔다. 이때 일어나는 현상으로 옳은 것은?</p>
+          <div class="space-y-2" data-quiz="2">
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">① 캔처럼 끌려온다</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="true">② 자유전자가 거의 없어 끌려오지 않는다</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">③ 유리컵이 반대 방향으로 밀려난다</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">④ 유리컵 전체가 (+)로 대전된다</button>
+          </div>
+          <p class="quiz-explain hidden mt-2 text-[12px] sm:text-xs bg-slate-50 rounded-lg p-2 text-slate-600 leading-relaxed"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROL PANEL -->
+    <div class="shrink-0 border-t-2 border-slate-100 bg-slate-50 p-3 space-y-3 lg:overflow-y-auto scrollbar-thin lg:max-h-[46%]">
+
+      <div>
+        <p class="text-[11px] font-bold text-slate-500 mb-1.5">🔬 관찰할 물체 선택</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button data-obj="can" class="obj-card active flex items-center gap-2 p-2.5 rounded-xl border-2 border-slate-200 bg-white text-left">
+            <span class="text-xl">🥫</span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-[12px] font-bold text-slate-700 truncate">알루미늄 캔</span>
+              <span class="inline-block mt-0.5 text-[9.5px] font-bold text-indigo-600 bg-indigo-100 rounded-full px-1.5 py-0.5">금속</span>
+            </span>
+          </button>
+          <button data-obj="ball" class="obj-card flex items-center gap-2 p-2.5 rounded-xl border-2 border-slate-200 bg-white text-left">
+            <span class="text-xl">⚙️</span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-[12px] font-bold text-slate-700 truncate">쇠구슬</span>
+              <span class="inline-block mt-0.5 text-[9.5px] font-bold text-indigo-600 bg-indigo-100 rounded-full px-1.5 py-0.5">금속</span>
+            </span>
+          </button>
+          <button data-obj="glass" class="obj-card flex items-center gap-2 p-2.5 rounded-xl border-2 border-slate-200 bg-white text-left">
+            <span class="text-xl">🥛</span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-[12px] font-bold text-slate-700 truncate">유리컵</span>
+              <span class="inline-block mt-0.5 text-[9.5px] font-bold text-slate-500 bg-slate-200 rounded-full px-1.5 py-0.5">비금속</span>
+            </span>
+          </button>
+          <button data-obj="foam" class="obj-card flex items-center gap-2 p-2.5 rounded-xl border-2 border-slate-200 bg-white text-left">
+            <span class="text-xl">🧊</span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-[12px] font-bold text-slate-700 truncate">스티로폼 컵</span>
+              <span class="inline-block mt-0.5 text-[9.5px] font-bold text-slate-500 bg-slate-200 rounded-full px-1.5 py-0.5">비금속</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button id="chargeNegBtn" class="charge-chip active-neg flex-1 text-[11.5px] sm:text-xs font-bold py-2 rounded-xl border-2 bg-white whitespace-nowrap">⚫ (−)대전체</button>
+        <button id="chargePosBtn" class="charge-chip flex-1 text-[11.5px] sm:text-xs font-bold py-2 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">🔴 (+)대전체</button>
+        <button id="chargeNeuBtn" class="charge-chip flex-1 text-[11.5px] sm:text-xs font-bold py-2 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">⚪ 중성</button>
+      </div>
+
+      <div>
+        <div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1">
+          <span>🧤 마찰 횟수 (전하량)</span><span id="frictionVal">5회</span>
+        </div>
+        <input id="frictionSlider" type="range" min="1" max="10" value="5" />
+      </div>
+
+      <div>
+        <div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1">
+          <span>📏 대전체와의 거리</span><span id="distanceVal">보통</span>
+        </div>
+        <input id="distanceSlider" type="range" min="0" max="100" value="60" />
+        <p class="text-[10px] text-slate-400 mt-1">※ 대전체를 화면에서 직접 좌우로 드래그해도 거리가 조절돼요.</p>
+      </div>
+
+      <div class="flex items-center justify-between gap-3 pt-0.5">
+        <label class="toggle">
+          <input id="electronToggle" type="checkbox" checked />
+          <span class="track"><span class="thumb"></span></span>
+          <span class="ml-2 text-[11px] font-semibold text-slate-600">전자 이동 보기</span>
+        </label>
+      </div>
+      <div class="flex items-center justify-between gap-3">
+        <label class="toggle">
+          <input id="chargeLabelToggle" type="checkbox" checked />
+          <span class="track"><span class="thumb"></span></span>
+          <span class="ml-2 text-[11px] font-semibold text-slate-600">전하 표시(+/−) 보기</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="shrink-0 bg-white border-t border-slate-200 text-center py-2.5 px-3" style="word-break:keep-all;">
+    <p class="f-wm">MINARI STUDIO</p>
+    <p class="text-[11px] text-slate-500 mt-0.5">Classroom Tools for Teachers · 정전기 유도 가상 실험실</p>
+    <p class="text-[10px] text-slate-400 mt-1">© <span id="footYear">2026</span> MINARI STUDIO. All rights reserved. | Electrostatic Induction Lab Web App <span id="appVersion">v1.0.0</span></p>
+  </footer>
+</div>
+
+<script>
+document.getElementById('footYear').textContent = new Date().getFullYear();
+const __metaVersion = document.querySelector('meta[name="app-version"]');
+if (__metaVersion) document.getElementById('appVersion').textContent = 'v' + __metaVersion.content;
+</script>
+<script>
+const SVGNS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs) {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function rand(a,b){ return a + Math.random()*(b-a); }
+
+/* ---------------- 상태 ---------------- */
+const state = {
+  objectKey: 'can',
+  chargeType: 'negative',
+  friction: 5,
+  distance: 60,
+  showElectrons: true,
+  showChargeLabels: true,
+};
+
+/* ---------------- 물체 템플릿 ---------------- */
+const TEMPLATES = {
+  can: {
+    label: '알루미늄 캔', metal: true,
+    bbox: { left:90, right:380, top:165, bottom:305, centerY:235, nearX:352, farX:118 },
+    count: 9,
+    draw(g) {
+      g.appendChild(el('rect', { x:90, y:165, width:290, height:140, rx:70, fill:'url(#metalGrad)', stroke:'#cbd5e1', 'stroke-width':3 }));
+      g.appendChild(el('ellipse', { cx:104, cy:235, rx:14, ry:62, fill:'#94a3b8', opacity:0.5 }));
+      g.appendChild(el('ellipse', { cx:366, cy:235, rx:14, ry:62, fill:'#fff', opacity:0.45 }));
+    },
+    clipShape() { return el('rect', { x:90, y:165, width:290, height:140, rx:70 }); },
+    samplePoint() { return { x: rand(125,345), y: rand(187,283) }; }
+  },
+  ball: {
+    label: '쇠구슬', metal: true,
+    bbox: { left:165, right:305, top:165, bottom:305, centerY:235, nearX:290, farX:180 },
+    count: 6,
+    draw(g) {
+      g.appendChild(el('circle', { cx:235, cy:235, r:70, fill:'url(#metalGrad)', stroke:'#cbd5e1', 'stroke-width':3 }));
+      g.appendChild(el('ellipse', { cx:208, cy:203, rx:24, ry:15, fill:'#fff', opacity:0.4 }));
+    },
+    clipShape() { return el('circle', { cx:235, cy:235, r:66 }); },
+    samplePoint() {
+      const a = rand(0, Math.PI*2); const r = Math.sqrt(Math.random()) * 52;
+      return { x: 235 + r*Math.cos(a), y: 235 + r*Math.sin(a) };
+    }
+  },
+  glass: {
+    label: '유리컵', metal: false,
+    bbox: { left:150, right:320, top:165, bottom:305, centerY:235 },
+    draw(g) {
+      g.appendChild(el('path', { d:'M150,165 L320,165 L292,305 L178,305 Z', fill:'rgba(224,242,254,0.18)', stroke:'rgba(224,242,254,0.75)', 'stroke-width':3 }));
+      g.appendChild(el('ellipse', { cx:235, cy:165, rx:85, ry:12, fill:'rgba(224,242,254,0.3)', stroke:'rgba(224,242,254,0.75)', 'stroke-width':2 }));
+      g.appendChild(el('line', { x1:210, y1:185, x2:198, y2:280, stroke:'rgba(255,255,255,0.5)', 'stroke-width':4, 'stroke-linecap':'round' }));
+    }
+  },
+  foam: {
+    label: '스티로폼 컵', metal: false,
+    bbox: { left:150, right:320, top:165, bottom:305, centerY:235 },
+    draw(g) {
+      g.appendChild(el('path', { d:'M150,165 L320,165 L292,305 L178,305 Z', fill:'#fefce8', stroke:'#eab308', 'stroke-width':2.5, 'stroke-dasharray':'1 5', 'stroke-linecap':'round' }));
+      g.appendChild(el('ellipse', { cx:235, cy:165, rx:85, ry:12, fill:'#fef9c3', stroke:'#eab308', 'stroke-width':2 }));
+    }
+  }
+};
+
+/* ---------------- 전하 아이콘 ---------------- */
+function makeChargeIcon(sign, r) {
+  const g = el('g', {});
+  g.appendChild(el('circle', { r:r, fill: sign==='+' ? '#ef4444' : '#2563eb', stroke:'#fff', 'stroke-width':1.5 }));
+  const text = el('text', { 'text-anchor':'middle', 'dominant-baseline':'central', fill:'#fff', 'font-size':r*1.15, 'font-weight':'800' });
+  text.textContent = sign==='+' ? '+' : '−';
+  g.appendChild(text);
+  return g;
+}
+
+/* ---------------- 대전체 아이콘 ---------------- */
+const rodIconsLayer = document.getElementById('rodChargeIcons');
+function renderRodIcons() {
+  rodIconsLayer.innerHTML = '';
+  if (state.chargeType === 'neutral') return;
+  const sign = state.chargeType === 'negative' ? '−' : '+';
+  [95,150,205,260,315,365].forEach(y=>{
+    const g = el('g', { transform:`translate(0,${y})` });
+    g.appendChild(el('circle', { r:8, fill: sign==='−' ? '#2563eb' : '#dc2626', stroke:'#fff', 'stroke-width':1.3 }));
+    const t = el('text', { 'text-anchor':'middle', 'dominant-baseline':'central', fill:'#fff', 'font-size':10, 'font-weight':'800' });
+    t.textContent = sign;
+    g.appendChild(t);
+    rodIconsLayer.appendChild(g);
+  });
+}
+
+function makeCalloutLabel(x, y, text, color) {
+  const g = el('g', { transform:`translate(${x},${y})` });
+  const w = text.length * 8 + 16;
+  g.appendChild(el('rect', { x:-w/2, y:-14, width:w, height:25, rx:12.5, fill:'#0f172a', stroke:color, 'stroke-width':2 }));
+  const t = el('text', { x:0, y:1, 'text-anchor':'middle', 'dominant-baseline':'central', fill:color, 'font-size':12, 'font-weight':'800' });
+  t.textContent = text;
+  g.appendChild(t);
+  return g;
+}
+
+/* ---------------- DOM 참조 ---------------- */
+const chargeNegBtn = document.getElementById('chargeNegBtn');
+const chargePosBtn = document.getElementById('chargePosBtn');
+const chargeNeuBtn = document.getElementById('chargeNeuBtn');
+const frictionSlider = document.getElementById('frictionSlider');
+const distanceSlider = document.getElementById('distanceSlider');
+const frictionVal = document.getElementById('frictionVal');
+const distanceVal = document.getElementById('distanceVal');
+const electronToggle = document.getElementById('electronToggle');
+const chargeLabelToggle = document.getElementById('chargeLabelToggle');
+const guideBubble = document.getElementById('guideBubble');
+const statusText = document.getElementById('statusText');
+const nearChargeText = document.getElementById('nearChargeText');
+const farChargeText = document.getElementById('farChargeText');
+const angleBar = document.getElementById('angleBar');
+const resetBtn = document.getElementById('resetBtn');
+const rodGroup = document.getElementById('rodGroup');
+const rodBar = document.getElementById('rodBar');
+const rodLabel = document.getElementById('rodLabel');
+const objectGroup = document.getElementById('objectGroup');
+const objectLabel = document.getElementById('objectLabel');
+const objClip = document.getElementById('objClip');
+const nonMetalBadge = document.getElementById('nonMetalBadge');
+const attractArrow = document.getElementById('attractArrow');
+const attractLine = document.getElementById('attractLine');
+const attractLabel = document.getElementById('attractLabel');
+const eMoveArrow = document.getElementById('eMoveArrow');
+const eMoveLine = document.getElementById('eMoveLine');
+const eMoveLabel = document.getElementById('eMoveLabel');
+const noChangeMark = document.getElementById('noChangeMark');
+
+/* ---------------- 현재 선택된 물체 데이터 ---------------- */
+let current = { tpl:null, pairs:[] };
+
+function selectObject(key) {
+  state.objectKey = key;
+  document.querySelectorAll('.obj-card').forEach(b=> b.classList.toggle('active', b.dataset.obj===key));
+
+  const tpl = TEMPLATES[key];
+  current.tpl = tpl;
+  objectGroup.innerHTML = '';
+  objClip.innerHTML = '';
+  tpl.draw(objectGroup);
+  objectLabel.textContent = tpl.label;
+
+  nonMetalBadge.classList.toggle('hidden', tpl.metal);
+
+  if (tpl.metal) {
+    objClip.appendChild(tpl.clipShape());
+    const chargeLayer = el('g', { id:'chargeLayer', 'clip-path':'url(#objClip)' });
+    objectGroup.appendChild(chargeLayer);
+    current.pairs = [];
+    for (let i=0;i<tpl.count;i++) {
+      const p0 = tpl.samplePoint();
+      const pair = {
+        baseX:p0.x, baseY:p0.y, curX:p0.x, curY:p0.y,
+        nearTarget: { x: tpl.bbox.nearX, y: p0.y + rand(-8,8) },
+        farTarget:  { x: tpl.bbox.farX,  y: p0.y + rand(-8,8) }
+      };
+      const nucleus = makeChargeIcon('+', 10);
+      nucleus.setAttribute('transform', `translate(${pair.baseX},${pair.baseY})`);
+      chargeLayer.appendChild(nucleus);
+      const electron = makeChargeIcon('−', 9);
+      electron.setAttribute('transform', `translate(${pair.baseX},${pair.baseY})`);
+      chargeLayer.appendChild(electron);
+      pair.electronEl = electron;
+      current.pairs.push(pair);
+    }
+  } else {
+    current.pairs = [];
+  }
+  dispCanShift = 0;
+  objectGroup.setAttribute('transform','translate(0,0)');
+}
+
+document.querySelectorAll('.obj-card').forEach(btn=>{
+  btn.addEventListener('click', ()=> selectObject(btn.dataset.obj));
+});
+
+/* ---------------- 전하 선택 ---------------- */
+function setCharge(type) {
+  state.chargeType = type;
+  chargeNegBtn.classList.remove('active-neg'); chargePosBtn.classList.remove('active-pos'); chargeNeuBtn.classList.remove('active-neu');
+  if (type==='negative') { chargeNegBtn.classList.add('active-neg'); rodBar.setAttribute('fill','url(#rodGradNeg)'); rodLabel.textContent='(−) 대전체'; rodLabel.setAttribute('fill','#bae6fd'); }
+  if (type==='positive') { chargePosBtn.classList.add('active-pos'); rodBar.setAttribute('fill','url(#rodGradPos)'); rodLabel.textContent='(+) 대전체'; rodLabel.setAttribute('fill','#fecaca'); }
+  if (type==='neutral')  { chargeNeuBtn.classList.add('active-neu'); rodBar.setAttribute('fill','url(#rodGradNeu)'); rodLabel.textContent='대전되지 않은 물체'; rodLabel.setAttribute('fill','#cbd5e1'); }
+  renderRodIcons();
+}
+chargeNegBtn.addEventListener('click', ()=>setCharge('negative'));
+chargePosBtn.addEventListener('click', ()=>setCharge('positive'));
+chargeNeuBtn.addEventListener('click', ()=>setCharge('neutral'));
+
+/* ---------------- 슬라이더 ---------------- */
+function updateFrictionLabel(){ frictionVal.textContent = state.friction + '회'; }
+function updateDistanceLabel(){
+  const d = state.distance;
+  distanceVal.textContent = d < 20 ? '매우 가까움' : d < 45 ? '가까움' : d < 70 ? '보통' : '멀리';
+}
+frictionSlider.addEventListener('input', (e)=>{ state.friction = +e.target.value; updateFrictionLabel(); });
+distanceSlider.addEventListener('input', (e)=>{ state.distance = +e.target.value; updateDistanceLabel(); });
+electronToggle.addEventListener('change', (e)=>{ state.showElectrons = e.target.checked; });
+chargeLabelToggle.addEventListener('change', (e)=>{ state.showChargeLabels = e.target.checked; });
+
+/* ---------------- 막대 거리 범위 & 드래그 ---------------- */
+const ROD_X_MIN = 420, ROD_X_MAX = 680;
+function rodXFromDistance(d) { return ROD_X_MIN + (d/100) * (ROD_X_MAX - ROD_X_MIN); }
+
+const svgEl = document.getElementById('scene');
+let dragging = false;
+function svgPointFromEvent(e) {
+  const pt = svgEl.createSVGPoint();
+  pt.x = e.clientX; pt.y = e.clientY;
+  return pt.matrixTransform(svgEl.getScreenCTM().inverse());
+}
+rodGroup.addEventListener('pointerdown', (e)=>{ dragging = true; rodGroup.style.cursor='grabbing'; e.preventDefault(); });
+window.addEventListener('pointermove', (e)=>{
+  if (!dragging) return;
+  const p = svgPointFromEvent(e);
+  const x = Math.max(ROD_X_MIN, Math.min(ROD_X_MAX, p.x));
+  const d = ((x - ROD_X_MIN) / (ROD_X_MAX - ROD_X_MIN)) * 100;
+  state.distance = d;
+  distanceSlider.value = Math.round(d);
+  updateDistanceLabel();
+});
+window.addEventListener('pointerup', ()=>{ if (dragging){ dragging=false; rodGroup.style.cursor='grab'; } });
+
+/* ---------------- 초기화 버튼 ---------------- */
+resetBtn.addEventListener('click', ()=>{
+  selectObject('can');
+  setCharge('negative');
+  state.friction = 5; frictionSlider.value = 5; updateFrictionLabel();
+  state.distance = 60; distanceSlider.value = 60; updateDistanceLabel();
+  state.showElectrons = true; electronToggle.checked = true;
+  state.showChargeLabels = true; chargeLabelToggle.checked = true;
+});
+
+/* 탭 전환 */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    ['guide','summary','quiz'].forEach(t=>{
+      document.getElementById('tab-'+t).classList.toggle('hidden', t!==tab);
+    });
+  });
+});
+
+/* 퀴즈 */
+document.querySelectorAll('[data-quiz]').forEach(wrapEl=>{
+  const buttons = wrapEl.querySelectorAll('.quiz-opt');
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if (wrapEl.dataset.answered) return;
+      wrapEl.dataset.answered = '1';
+      const correct = btn.dataset.correct === 'true';
+      buttons.forEach(b=>{
+        b.disabled = true;
+        if (b.dataset.correct==='true') b.classList.add('border-green-500','bg-green-50','font-bold');
+      });
+      if (!correct) btn.classList.add('border-red-400','bg-red-50');
+      const card = wrapEl.closest('div.bg-white');
+      card.classList.add(correct ? 'correct-flash' : 'wrong-flash');
+      const explain = card.querySelector('.quiz-explain');
+      explain.classList.remove('hidden');
+      if (wrapEl.dataset.quiz === '1') {
+        explain.textContent = (correct?'🎉 정답이에요! ':'🙂 아쉬워요! ') + '(−)대전체가 가까워지면 척력으로 전자가 먼 쪽으로 밀려나 가까운 쪽은 (+), 먼 쪽은 (−)가 됩니다.';
+      } else {
+        explain.textContent = (correct?'🎉 정답이에요! ':'🙂 아쉬워요! ') + '유리컵은 비금속(부도체)이라 자유전자가 거의 없어요. 전하가 이동할 수 없어서 정전기 유도가 일어나지 않고, 대전체와 인력도 생기지 않아 끌려오지 않습니다.';
+      }
+    });
+  });
+});
+
+/* ---------------- 물리량 계산 ---------------- */
+function computeTargetMagnitude() {
+  if (state.chargeType === 'neutral') return 0;
+  const proximity = Math.max(0, 1 - state.distance/100);
+  return (state.friction/10) * proximity;
+}
+
+/* ---------------- 상태 텍스트 갱신 ---------------- */
+function updateGuideAndStatus(mag) {
+  const tpl = current.tpl;
+  if (!tpl) return;
+  const objName = tpl.label;
+  const strong = mag > 0.06;
+
+  if (!tpl.metal) {
+    if (strong) {
+      guideBubble.textContent = `🚫 ${objName}은 비금속(부도체)이라 자유전자가 거의 없어서, 대전체를 가까이 해도 끌려오지 않아요!`;
+      statusText.textContent = `${objName}은 전자가 자유롭게 이동하지 못하는 부도체예요. 정전기 유도가 일어나지 않아 대전체와 인력이 생기지 않습니다.`;
+    } else {
+      guideBubble.textContent = `대전체를 ${objName} 쪽으로 가까이 가져가 보세요. 금속일 때와 어떻게 다를까요?`;
+      statusText.textContent = `${objName}은 비금속(부도체)이에요. 앞서 살펴본 금속 물체와 비교하며 관찰해 보세요.`;
+    }
+    nearChargeText.textContent = '해당없음'; farChargeText.textContent = '해당없음';
+    nearChargeText.className = 'sum-num text-slate-400 mt-0.5';
+    farChargeText.className = 'sum-num text-slate-400 mt-0.5';
+    angleBar.style.width = '0%';
+    return;
+  }
+
+  if (!strong) {
+    guideBubble.textContent = '⚪ 대전체가 멀리 있거나 중성이라 변화가 거의 없어요.';
+    statusText.textContent = `대전체와 ${objName} 사이에 작용하는 힘이 거의 없습니다.`;
+    nearChargeText.textContent = '중성'; farChargeText.textContent = '중성';
+    nearChargeText.className = 'sum-num text-slate-700 mt-0.5';
+    farChargeText.className = 'sum-num text-slate-700 mt-0.5';
+  } else if (state.chargeType === 'negative') {
+    guideBubble.textContent = `⚡ (−)대전체가 가까워져 ${objName} 속 전자가 먼 쪽으로 밀려납니다!`;
+    statusText.textContent = `척력에 의해 ${objName} 속 자유전자가 먼 쪽으로 이동해요. 가까운 쪽은 (+)를, 먼 쪽은 (−)를 띠며, 가까운 쪽과 대전체 사이에 인력이 작용해 끌려옵니다.`;
+    nearChargeText.textContent = '(+)'; farChargeText.textContent = '(−)';
+    nearChargeText.className = 'sum-num text-red-500 mt-0.5';
+    farChargeText.className = 'sum-num text-blue-600 mt-0.5';
+  } else {
+    guideBubble.textContent = `⚡ (+)대전체가 가까워져 ${objName} 속 전자가 가까운 쪽으로 끌려갑니다!`;
+    statusText.textContent = `인력에 의해 ${objName} 속 자유전자가 가까운 쪽으로 이동해요. 가까운 쪽은 (−)를, 먼 쪽은 (+)를 띠며, 가까운 쪽과 대전체 사이에 인력이 작용해 끌려옵니다.`;
+    nearChargeText.textContent = '(−)'; farChargeText.textContent = '(+)';
+    nearChargeText.className = 'sum-num text-blue-600 mt-0.5';
+    farChargeText.className = 'sum-num text-red-500 mt-0.5';
+  }
+  angleBar.style.width = Math.round(mag*100) + '%';
+}
+
+/* ---------------- 콜아웃 라벨 ---------------- */
+function updateCallouts(tpl, mag) {
+  const existing = objectGroup.querySelector('#calloutLayer');
+  if (existing) existing.remove();
+  if (!tpl.metal || !state.showChargeLabels || mag <= 0.1 || state.chargeType==='neutral') return;
+  const g = el('g', { id:'calloutLayer' });
+  const nearIsPos = state.chargeType === 'negative';
+  const nearColor = nearIsPos ? '#f87171' : '#60a5fa';
+  const farColor = nearIsPos ? '#60a5fa' : '#f87171';
+  const nearText = nearIsPos ? '(+) 전하' : '(−) 전하';
+  const farText = nearIsPos ? '(−) 전하' : '(+) 전하';
+  g.appendChild(makeCalloutLabel(tpl.bbox.nearX, tpl.bbox.top - 24, nearText, nearColor));
+  g.appendChild(makeCalloutLabel(tpl.bbox.farX, tpl.bbox.top - 24, farText, farColor));
+  objectGroup.appendChild(g);
+}
+
+/* ---------------- 애니메이션 루프 ---------------- */
+let dispMagnitude = 0;
+let dispCanShift = 0;
+let dispRodX = rodXFromDistance(state.distance);
+const MAX_SHIFT = 36;
+
+function animate() {
+  requestAnimationFrame(animate);
+  const tpl = current.tpl;
+  if (!tpl) return;
+
+  const target = computeTargetMagnitude();
+  dispMagnitude += (target - dispMagnitude) * 0.1;
+
+  const targetRodX = rodXFromDistance(state.distance);
+  dispRodX += (targetRodX - dispRodX) * 0.18;
+  rodGroup.setAttribute('transform', `translate(${dispRodX},0)`);
+
+  const effMag = tpl.metal ? dispMagnitude : 0;
+  const targetShift = effMag * MAX_SHIFT;
+  dispCanShift += (targetShift - dispCanShift) * 0.12;
+  objectGroup.setAttribute('transform', `translate(${dispCanShift},0)`);
+  objectLabel.setAttribute('transform', `translate(${dispCanShift},0)`);
+
+  if (tpl.metal) {
+    const towardNear = state.chargeType === 'positive';
+    current.pairs.forEach(p=>{
+      const tgt = towardNear ? p.nearTarget : p.farTarget;
+      p.curX += ((p.baseX + (tgt.x - p.baseX) * dispMagnitude) - p.curX) * 0.22;
+      p.curY += ((p.baseY + (tgt.y - p.baseY) * dispMagnitude) - p.curY) * 0.22;
+      p.electronEl.setAttribute('transform', `translate(${p.curX},${p.curY})`);
+      p.electronEl.setAttribute('opacity', state.showElectrons ? 1 : 0);
+    });
+
+    const objRightLocalX = tpl.bbox.right + dispCanShift;
+    const gap = dispRodX - 14 - objRightLocalX;
+    if (dispMagnitude > 0.08 && gap > 6) {
+      attractArrow.setAttribute('opacity', Math.min(1, dispMagnitude*2));
+      attractLine.setAttribute('x1', objRightLocalX); attractLine.setAttribute('x2', dispRodX-16);
+      attractLine.setAttribute('y1', tpl.bbox.centerY); attractLine.setAttribute('y2', tpl.bbox.centerY);
+      attractLabel.setAttribute('x', (objRightLocalX + dispRodX-16)/2);
+      attractLabel.setAttribute('y', tpl.bbox.centerY - 14);
+    } else {
+      attractArrow.setAttribute('opacity', 0);
+    }
+
+    if (state.showElectrons && dispMagnitude > 0.1 && state.chargeType !== 'neutral') {
+      eMoveArrow.setAttribute('opacity', Math.min(1, dispMagnitude*1.8));
+      const midY = tpl.bbox.top - 34;
+      if (towardNear) {
+        eMoveLine.setAttribute('x1', tpl.bbox.farX + dispCanShift); eMoveLine.setAttribute('x2', tpl.bbox.nearX + dispCanShift - 10);
+      } else {
+        eMoveLine.setAttribute('x1', tpl.bbox.nearX + dispCanShift); eMoveLine.setAttribute('x2', tpl.bbox.farX + dispCanShift + 10);
+      }
+      eMoveLine.setAttribute('y1', midY); eMoveLine.setAttribute('y2', midY);
+      eMoveLabel.setAttribute('x', (tpl.bbox.nearX + tpl.bbox.farX)/2 + dispCanShift);
+      eMoveLabel.setAttribute('y', midY - 10);
+    } else {
+      eMoveArrow.setAttribute('opacity', 0);
+    }
+    noChangeMark.setAttribute('opacity', 0);
+  } else {
+    attractArrow.setAttribute('opacity', 0);
+    eMoveArrow.setAttribute('opacity', 0);
+    const attemptMag = dispMagnitude;
+    if (attemptMag > 0.12) {
+      noChangeMark.setAttribute('opacity', Math.min(0.85, attemptMag*1.6));
+      noChangeMark.setAttribute('transform', `translate(${tpl.bbox.right + 55},0)`);
+    } else {
+      noChangeMark.setAttribute('opacity', 0);
+    }
+  }
+
+  updateCallouts(tpl, dispMagnitude);
+  updateGuideAndStatus(dispMagnitude);
+}
+
+/* ---------------- 시작 ---------------- */
+selectObject('can');
+setCharge('negative');
+updateFrictionLabel();
+updateDistanceLabel();
+animate();
+</script>
+</body>
+</html>
