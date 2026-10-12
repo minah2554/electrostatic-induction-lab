@@ -9,19 +9,8 @@
 <meta name="description" content="MINARI STUDIO · 정전기 유도 현상 가상 실험실 - 중학교 과학 수업용 인터랙티브 웹앱" />
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&family=Jua&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <style>
-  /* BC카드체 Bold (눈누 noonnu.cc 상업적 이용 무료 배포본) */
-  @font-face {
-    font-family: 'BcCardFont';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.1/BCcardL.woff') format('woff');
-    font-weight: 300; font-display: swap;
-  }
-  @font-face {
-    font-family: 'BcCardFont';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.1/BCcardB.woff') format('woff');
-    font-weight: 700; font-display: swap;
-  }
   * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
   html, body { margin:0; padding:0; font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
     word-break: keep-all; overflow-wrap: break-word; background:#eef1f6; }
@@ -61,14 +50,15 @@
   @keyframes floatGlow { 0%,100%{ filter:drop-shadow(0 0 3px rgba(34,211,238,.5)); } 50%{ filter:drop-shadow(0 0 9px rgba(34,211,238,.85)); } }
   .lab-floor { animation: floatGlow 2.6s ease-in-out infinite; }
 
-  /* 커스텀 슬라이더 */
-  input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:999px;
-    background: linear-gradient(90deg,#c7d2fe,#6366f1); outline:none; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:20px; height:20px; border-radius:50%;
-    background:#fff; border:3px solid #4f46e5; box-shadow:0 2px 6px rgba(79,70,229,.45); cursor:pointer; margin-top:-7px; }
-  input[type=range]::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:#fff; border:3px solid #4f46e5;
+  /* 커스텀 슬라이더 — background는 JS에서 실제 값(%)에 맞춰 동적으로 채워짐 */
+  input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:999px;
+    background:#e2e8f0; outline:none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:24px; height:24px; border-radius:50%;
+    background:#fff; border:4px solid #4f46e5; box-shadow:0 2px 6px rgba(79,70,229,.45); cursor:pointer; margin-top:-8px; }
+  input[type=range]::-moz-range-thumb { width:24px; height:24px; border-radius:50%; background:#fff; border:4px solid #4f46e5;
     box-shadow:0 2px 6px rgba(79,70,229,.45); cursor:pointer; }
-  input[type=range]::-moz-range-track { height:6px; border-radius:999px; background: linear-gradient(90deg,#c7d2fe,#6366f1); }
+  input[type=range]::-moz-range-track { height:8px; border-radius:999px; background:#e2e8f0; }
+  input[type=range]::-moz-range-progress { height:8px; border-radius:999px; background: linear-gradient(90deg,#818cf8,#4f46e5); }
 
   /* 토글 스위치 */
   .toggle { position:relative; display:inline-flex; align-items:center; cursor:pointer; }
@@ -83,12 +73,12 @@
     html, body { height:auto; }
   }
 
-  /* ===== 지정 폰트 스타일 ===== */
-  .app-title { font-family:'Jua','Juache',sans-serif; font-size:18px; line-height:1.2; }
+  /* ===== 지정 폰트 스타일 (본문과 동일한 Noto Sans KR로 통일) ===== */
+  .app-title { font-family:'Noto Sans KR',sans-serif; font-weight:800; font-size:18px; line-height:1.2; }
   @media (max-width:420px) { .app-title { font-size:15px; } }
-  .hero-title { font-family:'BcCardFont',sans-serif; font-weight:700; font-size:28px; }
-  .sum-num { font-family:'BcCardFont',sans-serif; font-weight:700; font-size:clamp(22px,5.5vw,34px); line-height:1.15; }
-  .f-wm { font-family:'BcCardFont',sans-serif; font-weight:700; font-size:15px; color:#0f766e; letter-spacing:.01em; }
+  .hero-title { font-family:'Noto Sans KR',sans-serif; font-weight:800; font-size:28px; }
+  .sum-num { font-family:'Noto Sans KR',sans-serif; font-weight:800; font-size:clamp(22px,5.5vw,34px); line-height:1.15; }
+  .f-wm { font-family:'Noto Sans KR',sans-serif; font-weight:800; font-size:15px; color:#0f766e; letter-spacing:.01em; }
 </style>
 </head>
 <body class="w-full min-h-screen text-slate-800">
@@ -225,7 +215,7 @@
           </div>
         </div>
         <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-[12px] sm:text-xs text-amber-800 leading-relaxed">
-          💡 <b>미나리쌤 Tip</b> — 대전체를 물체 쪽으로 드래그해서 가까이 가져가 보세요! 금속 물체와 비금속 물체를 번갈아 선택하면서 반응이 다른 까닭을 비교해 보세요.
+          💡 <b>선생님 Tip</b> — 대전체를 물체 쪽으로 드래그해서 가까이 가져가 보세요! 금속 물체와 비금속 물체를 번갈아 선택하면서 반응이 다른 까닭을 비교해 보세요.
         </div>
       </div>
 
@@ -325,18 +315,18 @@
       </div>
 
       <div>
-        <div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1">
-          <span>🧤 마찰 횟수 (전하량)</span><span id="frictionVal">5회</span>
+        <div class="flex justify-between items-center text-[13px] sm:text-sm font-bold text-slate-700 mb-1.5">
+          <span>🧤 마찰 횟수 (전하량)</span><span id="frictionVal" class="text-indigo-600">5회</span>
         </div>
         <input id="frictionSlider" type="range" min="1" max="10" value="5" />
       </div>
 
       <div>
-        <div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1">
-          <span>📏 대전체와의 거리</span><span id="distanceVal">보통</span>
+        <div class="flex justify-between items-center text-[13px] sm:text-sm font-bold text-slate-700 mb-1.5">
+          <span>📏 대전체와의 거리</span><span id="distanceVal" class="text-indigo-600">보통</span>
         </div>
         <input id="distanceSlider" type="range" min="0" max="100" value="60" />
-        <p class="text-[10px] text-slate-400 mt-1">※ 대전체를 화면에서 직접 좌우로 드래그해도 거리가 조절돼요.</p>
+        <p class="text-[11px] text-slate-400 mt-1">※ 대전체를 화면에서 직접 좌우로 드래그해도 거리가 조절돼요.</p>
       </div>
 
       <div class="flex items-center justify-between gap-3 pt-0.5">
@@ -358,10 +348,20 @@
 </div>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer class="shrink-0 bg-white border-t border-slate-200 text-center py-2.5 px-3" style="word-break:keep-all;">
-    <p class="f-wm">MINARI STUDIO</p>
-    <p class="text-[11px] text-slate-500 mt-0.5">Classroom Tools for Teachers · 정전기 유도 가상 실험실</p>
-    <p class="text-[10px] text-slate-400 mt-1">© <span id="footYear">2026</span> MINARI STUDIO. All rights reserved. | Electrostatic Induction Lab Web App <span id="appVersion">v1.0.0</span></p>
+  <footer class="shrink-0 bg-white border-t border-slate-200 text-center py-2 px-3" style="word-break:keep-all;">
+    <div class="flex items-center justify-center gap-1.5">
+      <span class="shrink-0 w-5 h-5 rounded-md overflow-hidden">
+        <svg viewBox="0 0 64 64" class="w-full h-full">
+          <defs><linearGradient id="footIconGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#6366f1"/>
+          </linearGradient></defs>
+          <rect width="64" height="64" rx="14" fill="url(#footIconGrad)"/>
+          <path d="M34 6 L14 36 H28 L24 58 L50 26 H35 Z" fill="#ffffff"/>
+        </svg>
+      </span>
+      <span class="f-wm">MINARI STUDIO</span>
+    </div>
+    <p class="text-[10px] text-slate-400 mt-0.5">© <span id="footYear">2026</span> MINARI STUDIO · 정전기 유도 가상 실험실 <span id="appVersion">v1.0.0</span></p>
   </footer>
 </div>
 
@@ -565,10 +565,16 @@ chargePosBtn.addEventListener('click', ()=>setCharge('positive'));
 chargeNeuBtn.addEventListener('click', ()=>setCharge('neutral'));
 
 /* ---------------- 슬라이더 ---------------- */
-function updateFrictionLabel(){ frictionVal.textContent = state.friction + '회'; }
+function fillSlider(slider) {
+  const min = +slider.min, max = +slider.max, val = +slider.value;
+  const pct = ((val - min) / (max - min)) * 100;
+  slider.style.background = `linear-gradient(90deg,#818cf8 0%,#4f46e5 ${pct}%,#e2e8f0 ${pct}%,#e2e8f0 100%)`;
+}
+function updateFrictionLabel(){ frictionVal.textContent = state.friction + '회'; fillSlider(frictionSlider); }
 function updateDistanceLabel(){
   const d = state.distance;
   distanceVal.textContent = d < 20 ? '매우 가까움' : d < 45 ? '가까움' : d < 70 ? '보통' : '멀리';
+  fillSlider(distanceSlider);
 }
 frictionSlider.addEventListener('input', (e)=>{ state.friction = +e.target.value; updateFrictionLabel(); });
 distanceSlider.addEventListener('input', (e)=>{ state.distance = +e.target.value; updateDistanceLabel(); });
