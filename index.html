@@ -11,8 +11,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap">
 <style>
+  /* BC카드체 (눈누 noonnu.cc 상업적 이용 무료 배포본) — 본문 전체 기본 폰트 */
+  @font-face {
+    font-family: 'BcCardFont';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.1/BCcardL.woff') format('woff');
+    font-weight: 300; font-display: swap;
+  }
+  @font-face {
+    font-family: 'BcCardFont';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.1/BCcardB.woff') format('woff');
+    font-weight: 700; font-display: swap;
+  }
   * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-  html, body { margin:0; padding:0; font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  html, body { margin:0; padding:0; font-family:'BcCardFont','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
     word-break: keep-all; overflow-wrap: break-word; background:#eef1f6; }
   #svgWrap { touch-action: none; }
 
@@ -73,12 +84,12 @@
     html, body { height:auto; }
   }
 
-  /* ===== 지정 폰트 스타일 (본문과 동일한 Noto Sans KR로 통일) ===== */
-  .app-title { font-family:'Noto Sans KR',sans-serif; font-weight:800; font-size:18px; line-height:1.2; }
+  /* ===== 지정 폰트 스타일 (전체 BC카드체로 통일, 본문과 동일 폰트) ===== */
+  .app-title { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:18px; line-height:1.2; }
   @media (max-width:420px) { .app-title { font-size:15px; } }
-  .hero-title { font-family:'Noto Sans KR',sans-serif; font-weight:800; font-size:28px; }
-  .sum-num { font-family:'Noto Sans KR',sans-serif; font-weight:800; font-size:clamp(22px,5.5vw,34px); line-height:1.15; }
-  .f-wm { font-family:'Noto Sans KR',sans-serif; font-weight:800; font-size:15px; color:#0f766e; letter-spacing:.01em; }
+  .hero-title { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:28px; }
+  .sum-num { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:clamp(22px,5.5vw,34px); line-height:1.15; }
+  .f-wm { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:15px; color:#0f766e; letter-spacing:.01em; }
 </style>
 </head>
 <body class="w-full min-h-screen text-slate-800">
