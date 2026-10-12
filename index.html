@@ -194,7 +194,7 @@
     </div>
 
     <!-- Guide bubble -->
-    <div id="guideBubble" class="slide-in absolute left-2 right-2 sm:left-4 sm:right-4 sm:max-w-md bottom-2 sm:bottom-4 glass-bubble rounded-2xl px-4 py-3 shadow-xl text-[12.5px] sm:text-sm font-medium text-slate-100 leading-relaxed" style="word-break:keep-all;">
+    <div id="guideBubble" class="slide-in absolute left-2 right-2 sm:left-4 sm:right-4 bottom-2 sm:bottom-4 glass-bubble rounded-2xl px-4 py-3 shadow-xl text-[12px] sm:text-[13.5px] font-medium text-slate-100 leading-relaxed" style="word-break:keep-all;">
       👋 물체와 대전체 종류를 선택하고, 거리를 조절해서 전자가 어떻게 움직이는지 관찰해 보세요!
     </div>
   </div>
@@ -789,7 +789,7 @@ function animate() {
 
     if (state.showElectrons && dispMagnitude > 0.1 && state.chargeType !== 'neutral') {
       eMoveArrow.setAttribute('opacity', Math.min(1, dispMagnitude*1.8));
-      const midY = tpl.bbox.top - 34;
+      const midY = tpl.bbox.top - 58;
       if (towardNear) {
         eMoveLine.setAttribute('x1', tpl.bbox.farX + dispCanShift); eMoveLine.setAttribute('x2', tpl.bbox.nearX + dispCanShift - 10);
       } else {
