@@ -22,6 +22,13 @@
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.1/BCcardB.woff') format('woff');
     font-weight: 700; font-display: swap;
   }
+  /* 나눔스퀘어라운드 (눈누 noonnu.cc 상업적 이용 무료 배포본) — 관찰·원리·퀴즈 본문 가독성용 */
+  @font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+  }
   * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
   html, body { margin:0; padding:0; font-family:'BcCardFont','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
     word-break: keep-all; overflow-wrap: break-word; background:#eef1f6; }
@@ -90,6 +97,8 @@
   .hero-title { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:28px; }
   .sum-num { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:clamp(22px,5.5vw,34px); line-height:1.15; }
   .f-wm { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:15px; color:#0f766e; letter-spacing:.01em; }
+  /* 관찰·원리·퀴즈 탭은 가독성을 위해 나눔스퀘어라운드로 */
+  .readable-area, .readable-area * { font-family:'NanumSquareRound','Noto Sans KR',sans-serif !important; }
 </style>
 </head>
 <body class="w-full min-h-screen text-slate-800">
@@ -194,14 +203,14 @@
   <div class="w-full lg:w-[40%] lg:h-full flex flex-col bg-white lg:overflow-hidden">
 
     <!-- Tabs -->
-    <div class="shrink-0 flex gap-1 p-1.5 m-2 mb-0 rounded-xl bg-slate-100">
+    <div class="readable-area shrink-0 flex gap-1 p-1.5 m-2 mb-0 rounded-xl bg-slate-100">
       <button data-tab="guide" class="tab-btn active flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold">🔍 관찰</button>
       <button data-tab="summary" class="tab-btn flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold">📘 원리</button>
       <button data-tab="quiz" class="tab-btn flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold">✏️ 퀴즈</button>
     </div>
 
     <!-- Tab contents -->
-    <div class="lg:flex-1 lg:overflow-y-auto scrollbar-thin p-3 sm:p-4 space-y-3">
+    <div class="readable-area lg:flex-1 lg:overflow-y-auto scrollbar-thin p-3 sm:p-4 space-y-3">
 
       <!-- GUIDE TAB -->
       <div id="tab-guide" class="space-y-3">
@@ -276,6 +285,18 @@
             <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="true">② 자유전자가 거의 없어 끌려오지 않는다</button>
             <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">③ 유리컵이 반대 방향으로 밀려난다</button>
             <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">④ 유리컵 전체가 (+)로 대전된다</button>
+          </div>
+          <p class="quiz-explain hidden mt-2 text-[12px] sm:text-xs bg-slate-50 rounded-lg p-2 text-slate-600 leading-relaxed"></p>
+        </div>
+
+        <div id="quiz3" class="bg-white border-2 border-purple-200 rounded-2xl p-3.5">
+          <p class="text-xs font-bold text-indigo-600 mb-1 flex items-center gap-1.5">Q3 <span class="text-[10px] font-bold text-purple-600 bg-purple-100 rounded-full px-2 py-0.5">심화</span></p>
+          <p class="text-[13px] sm:text-sm font-semibold mb-3 leading-relaxed">(+)전하를 띤 막대를 쇠구슬에 가까이 가져가 충분히 정전기 유도가 일어난 상태에서, <b>막대를 치우지 않은 채</b> 쇠구슬을 막대와 <b>가까운 쪽 A</b>와 <b>먼 쪽 B</b>로 쪼개어 멀리 떨어뜨렸다. 그 후 막대를 치웠을 때, A와 B가 띠는 전하로 옳은 것은?</p>
+          <div class="space-y-2" data-quiz="3">
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">① A: (+), B: (−)</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="true">② A: (−), B: (+)</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">③ A, B 모두 중성(전하 없음)</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">④ A, B 모두 (+)로 대전</button>
           </div>
           <p class="quiz-explain hidden mt-2 text-[12px] sm:text-xs bg-slate-50 rounded-lg p-2 text-slate-600 leading-relaxed"></p>
         </div>
@@ -359,20 +380,8 @@
 </div>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer class="shrink-0 bg-white border-t border-slate-200 text-center py-2 px-3" style="word-break:keep-all;">
-    <div class="flex items-center justify-center gap-1.5">
-      <span class="shrink-0 w-5 h-5 rounded-md overflow-hidden">
-        <svg viewBox="0 0 64 64" class="w-full h-full">
-          <defs><linearGradient id="footIconGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#6366f1"/>
-          </linearGradient></defs>
-          <rect width="64" height="64" rx="14" fill="url(#footIconGrad)"/>
-          <path d="M34 6 L14 36 H28 L24 58 L50 26 H35 Z" fill="#ffffff"/>
-        </svg>
-      </span>
-      <span class="f-wm">MINARI STUDIO</span>
-    </div>
-    <p class="text-[10px] text-slate-400 mt-0.5">© <span id="footYear">2026</span> MINARI STUDIO · 정전기 유도 가상 실험실 <span id="appVersion">v1.0.2</span></p>
+  <footer class="shrink-0 bg-white border-t border-slate-200 text-center py-2.5 px-3" style="word-break:keep-all;">
+    <p class="text-[11px] text-slate-500">© <span id="footYear">2026</span> MINARI STUDIO. 정전기 유도 가상 실험실 <span id="appVersion">v1.0.2</span>, All rights reserved.</p>
   </footer>
 </div>
 
@@ -656,8 +665,10 @@ document.querySelectorAll('[data-quiz]').forEach(wrapEl=>{
       explain.classList.remove('hidden');
       if (wrapEl.dataset.quiz === '1') {
         explain.textContent = (correct?'🎉 정답이에요! ':'🙂 아쉬워요! ') + '(−)대전체가 가까워지면 척력으로 전자가 먼 쪽으로 밀려나 가까운 쪽은 (+), 먼 쪽은 (−)가 됩니다.';
-      } else {
+      } else if (wrapEl.dataset.quiz === '2') {
         explain.textContent = (correct?'🎉 정답이에요! ':'🙂 아쉬워요! ') + '유리컵은 비금속(부도체)이라 자유전자가 거의 없어요. 전하가 이동할 수 없어서 정전기 유도가 일어나지 않고, 대전체와 인력도 생기지 않아 끌려오지 않습니다.';
+      } else {
+        explain.textContent = (correct?'🎉 정답이에요! 심화 개념까지 이해했네요! ':'🙂 아쉬워요! ') + '(+)대전체가 가까워지면 인력으로 자유전자가 가까운 쪽(A)으로 끌려와 A는 전자가 많아져 (−)를, 전자가 부족해진 먼 쪽(B)은 (+)를 띠어요. 이 상태에서 막대를 치우지 않고 두 조각으로 쪼개어 떼어 놓으면, 각 조각이 그 전하를 그대로 유지한 채 분리되어 A는 (−), B는 (+)로 대전됩니다. (정전기 유도에 의한 대전)';
       }
     });
   });
