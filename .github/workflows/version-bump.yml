@@ -3,6 +3,9 @@ name: Auto Version Bump
 on:
   push:
     branches: [main]
+    # 앱 파일이 바뀔 때만 버전을 올린다(README·워크플로 수정으로는 올리지 않음)
+    paths:
+      - 'index.html'
 
 permissions:
   contents: write
@@ -16,12 +19,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Bump patch version
+      - name: Bump version (각 자리는 0~9, 넘으면 윗자리로 올림)
         id: bump
         run: |
           OLD=$(cat VERSION | tr -d '[:space:]')
           IFS='.' read -r MA MI PA <<< "$OLD"
-          PA=$((PA+1))
+
+          PA=$((PA + 1))
+          if [ "$PA" -gt 9 ]; then
+            PA=0
+            MI=$((MI + 1))
+          fi
+          if [ "$MI" -gt 9 ]; then
+            MI=0
+            MA=$((MA + 1))
+          fi
+
           NEW="$MA.$MI.$PA"
           echo "$NEW" > VERSION
           # index.html 안의 버전 표기 2곳(meta 태그, 푸터 표시 텍스트)을 함께 갱신
@@ -29,6 +42,7 @@ jobs:
           sed -i "s/>v$OLD</>v$NEW</" index.html
           echo "old=$OLD" >> "$GITHUB_OUTPUT"
           echo "new=$NEW" >> "$GITHUB_OUTPUT"
+          echo "버전 $OLD → $NEW"
 
       - name: Commit & push
         run: |
