@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <title>정전기 유도 현상 가상 실험실</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzIyZDNlZSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzYzNjZmMSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTI2LDEwIEgzOCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yNywxMiBMMjcsMjcgTDE1LDQ3IFExMiw1MyAxOSw1MyBMNDUsNTMgUTUyLDUzIDQ5LDQ3IEwzNywyNyBMMzcsMTIiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMTksNDQgUTMyLDM1IDQ1LDQ0IEw0NCw0OSBRMzIsNDMgMjAsNDkgWiIgZmlsbD0iI2ZmZmZmZiIvPjwvc3ZnPg==" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzIyZDNlZSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzYzNjZmMSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTM0LDggTDE2LDM0IEgyOCBMMjUsNTYgTDQ4LDI4IEgzNSBaIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBmaWxsPSJub25lIi8+PC9zdmc+" />
 <meta name="app-version" content="1.0.6" />
 <meta name="description" content="MINARI STUDIO · 정전기 유도 현상 가상 실험실 - 중학교 과학 수업용 인터랙티브 웹앱" />
 <script src="https://cdn.tailwindcss.com"></script>
@@ -118,9 +118,7 @@
               <stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#6366f1"/>
             </linearGradient></defs>
             <rect width="64" height="64" fill="url(#iconGrad)"/>
-            <path d="M26,10 H38" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none"/>
-            <path d="M27,12 L27,27 L15,47 Q12,53 19,53 L45,53 Q52,53 49,47 L37,27 L37,12" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <path d="M19,44 Q32,35 45,44 L44,49 Q32,43 20,49 Z" fill="#ffffff"/>
+            <path d="M34,8 L16,34 H28 L25,56 L48,28 H35 Z" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
         </span>
         <div class="min-w-0">
@@ -206,9 +204,18 @@
 
     <!-- Tabs -->
     <div class="readable-area shrink-0 flex gap-1 p-1.5 m-2 mb-0 rounded-xl bg-slate-100">
-      <button data-tab="guide" class="tab-btn active flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold">🔍 관찰</button>
-      <button data-tab="summary" class="tab-btn flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold">📘 원리</button>
-      <button data-tab="quiz" class="tab-btn flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold">✏️ 퀴즈</button>
+      <button data-tab="guide" class="tab-btn active flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold flex items-center justify-center gap-1">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><line x1="15" y1="15" x2="20" y2="20"/></svg>
+        관찰
+      </button>
+      <button data-tab="summary" class="tab-btn flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold flex items-center justify-center gap-1">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.5-4-2-7-1v13c3-1 5.5-0.5 7 1 1.5-1.5 4-2 7-1V5c-3-1-5.5-0.5-7 1z"/><line x1="12" y1="6" x2="12" y2="19"/></svg>
+        원리
+      </button>
+      <button data-tab="quiz" class="tab-btn flex-1 py-2 rounded-lg text-[12px] sm:text-sm font-bold flex items-center justify-center gap-1">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        퀴즈
+      </button>
     </div>
 
     <!-- Tab contents -->
@@ -423,7 +430,13 @@ const TEMPLATES = {
       g.appendChild(el('ellipse', { cx:366, cy:235, rx:14, ry:62, fill:'#fff', opacity:0.45 }));
     },
     clipShape() { return el('rect', { x:90, y:165, width:290, height:140, rx:70 }); },
-    samplePoint() { return { x: rand(125,345), y: rand(187,283) }; }
+    // 9개 전하쌍을 3x3 격자로 고르게 배치(약간의 자연스러운 흔들림만 추가) — 한쪽으로 쏠리지 않도록
+    samplePoint(i) {
+      const col = i % 3, row = Math.floor(i / 3);
+      const x = 160 + col * 75;   // 160, 235, 310
+      const y = 205 + row * 30;   // 205, 235, 265
+      return { x: x + rand(-10,10), y: y + rand(-8,8) };
+    }
   },
   ball: {
     label: '쇠구슬', metal: true,
@@ -434,9 +447,11 @@ const TEMPLATES = {
       g.appendChild(el('ellipse', { cx:208, cy:203, rx:24, ry:15, fill:'#fff', opacity:0.4 }));
     },
     clipShape() { return el('circle', { cx:235, cy:235, r:66 }); },
-    samplePoint() {
-      const a = rand(0, Math.PI*2); const r = Math.sqrt(Math.random()) * 52;
-      return { x: 235 + r*Math.cos(a), y: 235 + r*Math.sin(a) };
+    // 6개 전하쌍을 정육각형 고리 모양으로 고르게 배치 — 한쪽으로 쏠리지 않도록
+    samplePoint(i) {
+      const angle = (Math.PI*2/6) * i - Math.PI/2;
+      const r = 32;
+      return { x: 235 + r*Math.cos(angle) + rand(-5,5), y: 235 + r*Math.sin(angle) + rand(-5,5) };
     }
   },
   glass: {
@@ -547,7 +562,7 @@ function selectObject(key) {
     objectGroup.appendChild(chargeLayer);
     current.pairs = [];
     for (let i=0;i<tpl.count;i++) {
-      const p0 = tpl.samplePoint();
+      const p0 = tpl.samplePoint(i);
       // 전자의 '중성 휴식 위치'는 원자핵(+)과 완전히 겹치지 않도록 살짝 옆으로 띄운다.
       // (겹쳐 그리면 중성 상태에서 (+)가 (−)에 가려 "항상 (−)만 있는 것처럼" 보이는 과학적 오개념을 유발함)
       const restAngle = rand(0, Math.PI*2);
