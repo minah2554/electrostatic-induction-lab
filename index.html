@@ -159,7 +159,7 @@
         </defs>
 
         <!-- 실험대 바닥 -->
-        <line class="lab-floor" x1="40" y1="345" x2="720" y2="345" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>
+        <line id="labFloor" class="lab-floor" x1="40" y1="345" x2="720" y2="345" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>
 
         <!-- 인력 화살표 -->
         <g id="attractArrow" opacity="0">
@@ -180,8 +180,16 @@
         </g>
 
         <!-- ===== 물체 그룹 (동적 생성) ===== -->
-        <g id="objectGroup"></g>
-        <text id="objectLabel" x="235" y="333" text-anchor="middle" font-size="19" font-weight="800" fill="#e2e8f0"></text>
+        <!-- sceneTop: 일반 모드에서는 변형 없음, 비교 모드에서는 위쪽 띠로 축소 이동 -->
+        <g id="sceneTop">
+          <g id="objectGroup"></g>
+          <text id="objectLabel" x="235" y="333" text-anchor="middle" font-size="19" font-weight="800" fill="#e2e8f0"></text>
+        </g>
+        <!-- sceneBottom: 비교 모드에서만 사용(비금속, 정적) -->
+        <g id="sceneBottom" opacity="0">
+          <g id="objectGroup2"></g>
+          <text id="objectLabel2" x="235" y="333" text-anchor="middle" font-size="19" font-weight="800" fill="#e2e8f0"></text>
+        </g>
 
         <!-- ===== 대전체(막대) ===== -->
         <g id="rodGroup" style="cursor:grab;">
@@ -223,6 +231,20 @@
 
       <!-- GUIDE TAB -->
       <div id="tab-guide" class="space-y-3">
+        <!-- 예상하기(예상 → 관찰 → 설명) -->
+        <div id="predictCard" class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-3.5">
+          <p class="text-[14px] font-bold text-sky-700 mb-1.5">🤔 먼저 예상해 보세요</p>
+          <p id="predictQ" class="text-[14px] sm:text-[15px] font-semibold text-slate-800 mb-2.5 leading-relaxed">지금 고른 물체에 대전체를 가까이 가져가면 어떻게 될까요?</p>
+          <div id="predictOpts" class="space-y-2">
+            <button data-pred="attract" class="pred-opt w-full text-left text-[14px] sm:text-[15px] px-3 py-2 rounded-xl border-2 border-slate-300 bg-white hover:bg-sky-100 font-semibold">끌려올 것이다</button>
+            <button data-pred="none" class="pred-opt w-full text-left text-[14px] sm:text-[15px] px-3 py-2 rounded-xl border-2 border-slate-300 bg-white hover:bg-sky-100 font-semibold">아무 변화가 없을 것이다</button>
+            <button data-pred="repel" class="pred-opt w-full text-left text-[14px] sm:text-[15px] px-3 py-2 rounded-xl border-2 border-slate-300 bg-white hover:bg-sky-100 font-semibold">밀려날 것이다</button>
+          </div>
+          <p id="predictHint" class="hidden mt-2.5 text-[13.5px] sm:text-[14px] text-sky-800 bg-white/70 rounded-lg px-2.5 py-2 leading-relaxed"></p>
+          <p id="predictResult" class="hidden mt-2.5 text-[13.5px] sm:text-[14px] rounded-lg px-2.5 py-2 leading-relaxed font-semibold"></p>
+          <button id="predictReset" class="hidden mt-2 text-[13px] font-bold text-sky-700 underline">다시 예상하기</button>
+        </div>
+
         <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-3.5">
           <p class="text-[13.5px] font-bold text-indigo-600 mb-1">현재 상태</p>
           <p id="statusText" class="text-[14.5px] sm:text-[15.5px] font-semibold text-slate-800 leading-relaxed">대전되지 않은 물체가 가까이 있어요. 아무 변화가 없습니다.</p>
@@ -242,6 +264,29 @@
           <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
             <div id="angleBar" class="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-150" style="width:0%"></div>
           </div>
+        </div>
+        <!-- 간단 활동 기록 -->
+        <div class="bg-white border-2 border-slate-200 rounded-2xl p-3.5">
+          <div class="flex items-center justify-between gap-2 mb-1.5">
+            <p class="text-[14px] font-bold text-slate-700">📝 실험 결과 기록</p>
+            <button id="recPrint" class="text-[13px] font-bold text-indigo-700 underline">인쇄</button>
+          </div>
+          <p id="recCond" class="text-[13.5px] text-slate-500 mb-2 leading-relaxed"></p>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button data-rec="끌려옴" class="rec-btn text-[13.5px] font-bold py-2 rounded-xl border-2 border-slate-300 bg-white hover:bg-slate-50">끌려옴</button>
+            <button data-rec="변화 없음" class="rec-btn text-[13.5px] font-bold py-2 rounded-xl border-2 border-slate-300 bg-white hover:bg-slate-50">변화 없음</button>
+            <button data-rec="밀려남" class="rec-btn text-[13.5px] font-bold py-2 rounded-xl border-2 border-slate-300 bg-white hover:bg-slate-50">밀려남</button>
+          </div>
+          <div id="recWrap" class="hidden mt-2.5 overflow-x-auto">
+            <table class="w-full text-[13px] border-collapse">
+              <thead><tr class="text-slate-500">
+                <th class="text-left font-bold py-1">물체</th><th class="text-left font-bold py-1">대전체</th>
+                <th class="text-left font-bold py-1">거리</th><th class="text-left font-bold py-1">결과</th><th></th>
+              </tr></thead>
+              <tbody id="recBody"></tbody>
+            </table>
+          </div>
+          <p id="recEmpty" class="text-[13px] text-slate-400 mt-2">실험한 뒤 위에서 결과를 선택하면 한 줄씩 기록돼요.</p>
         </div>
         <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-[13.5px] sm:text-[14.5px] text-amber-800 leading-relaxed">
           💡 <b>선생님 Tip</b> — 대전체를 물체 쪽으로 드래그해서 가까이 가져가 보세요! 금속 물체와 비금속 물체를 번갈아 선택하면서 반응이 다른 까닭을 비교해 보세요.
@@ -325,7 +370,14 @@
     <div class="order-1 lg:order-3 shrink-0 border-t-2 border-b-2 lg:border-b-0 border-slate-100 bg-slate-50 p-2.5 sm:p-3 space-y-2 sm:space-y-2.5 lg:overflow-y-auto scrollbar-thin lg:max-h-[58%]">
 
       <div>
-        <p class="text-[15px] font-bold text-slate-700 mb-2">🔬 관찰할 물체 선택</p>
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <p class="text-[15px] font-bold text-slate-700">🔬 관찰할 물체 선택</p>
+          <label class="toggle shrink-0">
+            <input id="compareToggle" type="checkbox" />
+            <span class="track"><span class="thumb"></span></span>
+            <span class="ml-2 text-[13.5px] font-bold text-indigo-700 whitespace-nowrap">금속·비금속 비교</span>
+          </label>
+        </div>
         <div class="grid grid-cols-2 gap-2">
           <button data-obj="can" class="obj-card active flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
             <span class="text-2xl">🥫</span>
@@ -423,6 +475,11 @@ const state = {
   distance: 60,
   showElectrons: true,
   showChargeLabels: true,
+  compareMode: false,   // 금속 vs 비금속 나란히 비교
+  metalKey: 'can',      // 비교 모드 위쪽(금속)
+  nonMetalKey: 'glass', // 비교 모드 아래쪽(비금속)
+  prediction: null,     // 예상하기에서 고른 값
+  predictionResult: null,
 };
 
 /* ---------------- 물체 템플릿 ---------------- */
@@ -568,18 +625,60 @@ const noChangeMark = document.getElementById('noChangeMark');
 /* ---------------- 현재 선택된 물체 데이터 ---------------- */
 let current = { tpl:null, pairs:[] };
 
-function selectObject(key) {
-  state.objectKey = key;
-  document.querySelectorAll('.obj-card').forEach(b=> b.classList.toggle('active', b.dataset.obj===key));
+/* 비교 모드: 위쪽=금속(움직임), 아래쪽=비금속(정적), 대전체는 공용 */
+const sceneTop = document.getElementById('sceneTop');
+const sceneBottom = document.getElementById('sceneBottom');
+const objectGroup2 = document.getElementById('objectGroup2');
+const objectLabel2 = document.getElementById('objectLabel2');
+const CMP = { s:0.78, tx:51.7, tyTop:-55.3, tyBottom:116.7 };
 
+function applySceneLayout() {
+  const floor = document.getElementById('labFloor');
+  if (floor) floor.setAttribute('opacity', state.compareMode ? 0 : 0.55);
+  if (state.compareMode) {
+    sceneTop.setAttribute('transform', `translate(${CMP.tx},${CMP.tyTop}) scale(${CMP.s})`);
+    sceneBottom.setAttribute('transform', `translate(${CMP.tx},${CMP.tyBottom}) scale(${CMP.s})`);
+    sceneBottom.setAttribute('opacity', 1);
+  } else {
+    sceneTop.removeAttribute('transform');
+    sceneBottom.setAttribute('opacity', 0);
+  }
+}
+
+function drawNonMetalScene(key) {
+  const tpl = TEMPLATES[key];
+  objectGroup2.innerHTML = '';
+  tpl.draw(objectGroup2);
+  objectLabel2.textContent = tpl.label + ' · 비금속';
+}
+
+function selectObject(key) {
+  const t = TEMPLATES[key];
+  if (state.compareMode) {
+    // 비교 모드에서는 금속을 고르면 위쪽이, 비금속을 고르면 아래쪽이 바뀐다
+    if (t.metal) { state.metalKey = key; buildMainObject(key); }
+    else { state.nonMetalKey = key; drawNonMetalScene(key); }
+    document.querySelectorAll('.obj-card').forEach(b=>
+      b.classList.toggle('active', b.dataset.obj===state.metalKey || b.dataset.obj===state.nonMetalKey));
+    nonMetalBadge.classList.add('hidden');
+    resetPrediction(); updateRecCond();
+    return;
+  }
+  state.objectKey = key;
+  if (t.metal) state.metalKey = key; else state.nonMetalKey = key;
+  document.querySelectorAll('.obj-card').forEach(b=> b.classList.toggle('active', b.dataset.obj===key));
+  nonMetalBadge.classList.toggle('hidden', t.metal);
+  buildMainObject(key);
+  resetPrediction(); updateRecCond();
+}
+
+function buildMainObject(key) {
   const tpl = TEMPLATES[key];
   current.tpl = tpl;
   objectGroup.innerHTML = '';
   objClip.innerHTML = '';
   tpl.draw(objectGroup);
-  objectLabel.textContent = tpl.label;
-
-  nonMetalBadge.classList.toggle('hidden', tpl.metal);
+  objectLabel.textContent = state.compareMode ? tpl.label + ' · 금속' : tpl.label;
 
   if (tpl.metal) {
     objClip.appendChild(tpl.clipShape());
@@ -628,6 +727,7 @@ function setCharge(type) {
   if (type==='positive') { chargePosBtn.classList.add('active-pos'); rodBar.setAttribute('fill','url(#rodGradPos)'); rodLabel.textContent='(+) 대전체'; rodLabel.setAttribute('fill','#fecaca'); }
   if (type==='neutral')  { chargeNeuBtn.classList.add('active-neu'); rodBar.setAttribute('fill','url(#rodGradNeu)'); rodLabel.textContent='대전되지 않은 물체'; rodLabel.setAttribute('fill','#cbd5e1'); }
   renderRodIcons();
+  updateRecCond();
 }
 chargeNegBtn.addEventListener('click', ()=>setCharge('negative'));
 chargePosBtn.addEventListener('click', ()=>setCharge('positive'));
@@ -641,6 +741,7 @@ function fillSlider(slider) {
 }
 function updateFrictionLabel(){
   frictionVal.textContent = state.friction + '회';
+  updateRecCond();
   fillSlider(frictionSlider);
   renderRodIcons();   // 마찰 횟수에 따라 대전체의 전하 개수를 다시 그린다
 }
@@ -648,6 +749,7 @@ function updateDistanceLabel(){
   const d = state.distance;
   distanceVal.textContent = d < 20 ? '매우 가까움' : d < 45 ? '가까움' : d < 70 ? '보통' : '멀리';
   fillSlider(distanceSlider);
+  updateRecCond();
 }
 frictionSlider.addEventListener('input', (e)=>{ state.friction = +e.target.value; updateFrictionLabel(); });
 distanceSlider.addEventListener('input', (e)=>{ state.distance = +e.target.value; updateDistanceLabel(); });
@@ -780,6 +882,10 @@ function updateGuideAndStatus(mag) {
     nearChargeText.className = 'sum-num text-blue-600 mt-0.5';
     farChargeText.className = 'sum-num text-red-500 mt-0.5';
   }
+  if (state.compareMode && strong) {
+    const nm = TEMPLATES[state.nonMetalKey].label;
+    guideBubble.textContent = `⚖️ 같은 대전체·같은 거리인데도 ${objName}(금속)은 끌려오고, ${nm}(비금속)은 변화가 없어요! 차이를 만드는 것은 '자유전자'입니다.`;
+  }
   angleBar.style.width = Math.round(mag*100) + '%';
 }
 
@@ -823,6 +929,12 @@ function animate() {
   objectGroup.setAttribute('transform', `translate(${dispCanShift},0)`);
   objectLabel.setAttribute('transform', `translate(${dispCanShift},0)`);
 
+  // 비교 모드에서는 위쪽 장면이 축소·이동되므로, 화살표 좌표를 바깥 좌표계로 변환한다
+  const cmp = state.compareMode;
+  const S = cmp ? CMP.s : 1, TX = cmp ? CMP.tx : 0, TY = cmp ? CMP.tyTop : 0;
+  const outX = x => x * S + TX;
+  const outY = y => y * S + TY;
+
   if (tpl.metal) {
     const towardNear = state.chargeType === 'positive';
     current.pairs.forEach(p=>{
@@ -833,54 +945,203 @@ function animate() {
       p.electronEl.setAttribute('opacity', state.showElectrons ? 1 : 0);
     });
 
-    const objRightLocalX = tpl.bbox.right + dispCanShift;
-    const gap = dispRodX - 14 - objRightLocalX;
+    const objRightOuter = outX(tpl.bbox.right + dispCanShift);
+    const gap = dispRodX - 14 - objRightOuter;
     if (dispMagnitude > 0.08 && gap > 6) {
+      const cy = outY(tpl.bbox.centerY);
       attractArrow.setAttribute('opacity', Math.min(1, dispMagnitude*2));
-      attractLine.setAttribute('x1', objRightLocalX); attractLine.setAttribute('x2', dispRodX-16);
-      attractLine.setAttribute('y1', tpl.bbox.centerY); attractLine.setAttribute('y2', tpl.bbox.centerY);
-      attractLabel.setAttribute('x', (objRightLocalX + dispRodX-16)/2);
-      attractLabel.setAttribute('y', tpl.bbox.centerY - 14);
+      attractLine.setAttribute('x1', objRightOuter); attractLine.setAttribute('x2', dispRodX-16);
+      attractLine.setAttribute('y1', cy); attractLine.setAttribute('y2', cy);
+      attractLabel.setAttribute('x', (objRightOuter + dispRodX-16)/2);
+      attractLabel.setAttribute('y', cy - 14);
     } else {
       attractArrow.setAttribute('opacity', 0);
     }
 
     if (state.showElectrons && dispMagnitude > 0.1 && state.chargeType !== 'neutral') {
       eMoveArrow.setAttribute('opacity', Math.min(1, dispMagnitude*1.8));
-      const midY = tpl.bbox.top - 58;
+      const midY = outY(tpl.bbox.top - 58);
       if (towardNear) {
-        eMoveLine.setAttribute('x1', tpl.bbox.farX + dispCanShift); eMoveLine.setAttribute('x2', tpl.bbox.nearX + dispCanShift - 10);
+        eMoveLine.setAttribute('x1', outX(tpl.bbox.farX + dispCanShift)); eMoveLine.setAttribute('x2', outX(tpl.bbox.nearX + dispCanShift - 10));
       } else {
-        eMoveLine.setAttribute('x1', tpl.bbox.nearX + dispCanShift); eMoveLine.setAttribute('x2', tpl.bbox.farX + dispCanShift + 10);
+        eMoveLine.setAttribute('x1', outX(tpl.bbox.nearX + dispCanShift)); eMoveLine.setAttribute('x2', outX(tpl.bbox.farX + dispCanShift + 10));
       }
       eMoveLine.setAttribute('y1', midY); eMoveLine.setAttribute('y2', midY);
-      eMoveLabel.setAttribute('x', (tpl.bbox.nearX + tpl.bbox.farX)/2 + dispCanShift);
+      eMoveLabel.setAttribute('x', outX((tpl.bbox.nearX + tpl.bbox.farX)/2 + dispCanShift));
       eMoveLabel.setAttribute('y', midY - 10);
     } else {
       eMoveArrow.setAttribute('opacity', 0);
     }
-    noChangeMark.setAttribute('opacity', 0);
   } else {
     attractArrow.setAttribute('opacity', 0);
     eMoveArrow.setAttribute('opacity', 0);
-    const attemptMag = dispMagnitude;
-    if (attemptMag > 0.12) {
-      noChangeMark.setAttribute('opacity', Math.min(0.85, attemptMag*1.6));
-      noChangeMark.setAttribute('transform', `translate(${tpl.bbox.right + 55},0)`);
-    } else {
-      noChangeMark.setAttribute('opacity', 0);
-    }
+  }
+
+  // 변화 없음(∅) 표시 — 일반 모드: 선택한 비금속 옆 / 비교 모드: 아래쪽 비금속 옆
+  const nmTpl = cmp ? TEMPLATES[state.nonMetalKey] : (tpl.metal ? null : tpl);
+  if (nmTpl && dispMagnitude > 0.12) {
+    const nmS = cmp ? CMP.s : 1, nmTX = cmp ? CMP.tx : 0, nmTY = cmp ? CMP.tyBottom : 0;
+    const markX = (nmTpl.bbox.right + 55) * nmS + nmTX;
+    const markDY = (235 * nmS + nmTY) - 235;
+    noChangeMark.setAttribute('opacity', Math.min(0.85, dispMagnitude*1.6));
+    noChangeMark.setAttribute('transform', `translate(${markX},${markDY}) scale(${nmS})`);
+  } else {
+    noChangeMark.setAttribute('opacity', 0);
   }
 
   updateCallouts(tpl, dispMagnitude);
   updateGuideAndStatus(dispMagnitude);
+  checkPrediction(dispMagnitude);
 }
+
+/* ---------------- 비교 모드 전환 ---------------- */
+const compareToggle = document.getElementById('compareToggle');
+compareToggle.addEventListener('change', (e)=>{
+  state.compareMode = e.target.checked;
+  applySceneLayout();
+  if (state.compareMode) {
+    // 위쪽은 반드시 금속, 아래쪽은 반드시 비금속
+    if (!TEMPLATES[state.metalKey] || !TEMPLATES[state.metalKey].metal) state.metalKey = 'can';
+    if (!TEMPLATES[state.nonMetalKey] || TEMPLATES[state.nonMetalKey].metal) state.nonMetalKey = 'glass';
+    buildMainObject(state.metalKey);
+    drawNonMetalScene(state.nonMetalKey);
+    document.querySelectorAll('.obj-card').forEach(b=>
+      b.classList.toggle('active', b.dataset.obj===state.metalKey || b.dataset.obj===state.nonMetalKey));
+    nonMetalBadge.classList.add('hidden');
+  } else {
+    selectObject(state.objectKey);
+  }
+  resetPrediction();
+});
+
+/* ---------------- 예상하기(예상 → 관찰 → 설명) ---------------- */
+const predictOpts = document.getElementById('predictOpts');
+const predictHint = document.getElementById('predictHint');
+const predictResult = document.getElementById('predictResult');
+const predictResetBtn = document.getElementById('predictReset');
+const predictQ = document.getElementById('predictQ');
+
+function predictQuestionText() {
+  if (state.compareMode) return '금속과 비금속에 같은 대전체를 똑같이 가까이 하면, 두 물체는 어떻게 될까요? (금속 기준으로 예상해 보세요)';
+  const name = TEMPLATES[state.objectKey].label;
+  return `${name}에 대전체를 가까이 가져가면 어떻게 될까요?`;
+}
+function resetPrediction() {
+  state.prediction = null; state.predictionResult = null;
+  predictQ.textContent = predictQuestionText();
+  predictOpts.classList.remove('hidden');
+  predictHint.classList.add('hidden');
+  predictResult.classList.add('hidden');
+  predictResetBtn.classList.add('hidden');
+  document.querySelectorAll('.pred-opt').forEach(b=>{
+    b.disabled = false;
+    b.classList.remove('border-sky-500','bg-sky-100','opacity-50');
+  });
+}
+document.querySelectorAll('.pred-opt').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    if (state.prediction) return;
+    state.prediction = btn.dataset.pred;
+    document.querySelectorAll('.pred-opt').forEach(b=>{
+      b.disabled = true;
+      if (b === btn) b.classList.add('border-sky-500','bg-sky-100');
+      else b.classList.add('opacity-50');
+    });
+    predictHint.textContent = '✅ 예상을 골랐어요! 이제 대전체를 물체 쪽으로 가까이 끌어다 놓고, 예상이 맞는지 확인해 보세요.';
+    predictHint.classList.remove('hidden');
+  });
+});
+predictResetBtn.addEventListener('click', resetPrediction);
+
+// 관찰이 충분히 이루어지면 예상과 결과를 자동 비교
+function checkPrediction(mag) {
+  if (!state.prediction || state.predictionResult) return;
+  if (state.chargeType === 'neutral' || mag < 0.35) return;
+  const metal = current.tpl && current.tpl.metal;
+  const actual = metal ? 'attract' : 'none';
+  const hit = state.prediction === actual;
+  state.predictionResult = actual;
+  const actualText = metal ? '끌려왔어요' : '아무 변화가 없었어요';
+  const why = metal
+    ? '금속 속 자유전자가 한쪽으로 몰려 대전체와 가까운 쪽에 다른 종류의 전하가 생기기 때문이에요.'
+    : '비금속은 자유전자가 거의 없어 전하가 물체를 가로질러 이동하지 못하기 때문이에요.';
+  predictResult.textContent = (hit ? '🎯 예상과 같았어요! ' : '💡 예상과 달랐네요! ') + `실제로는 ${actualText}. ` + why;
+  predictResult.className = 'mt-2.5 text-[13.5px] sm:text-[14px] rounded-lg px-2.5 py-2 leading-relaxed font-semibold ' +
+    (hit ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900');
+  predictResult.classList.remove('hidden');
+  predictResetBtn.classList.remove('hidden');
+}
+
+/* ---------------- 실험 결과 기록 ---------------- */
+const recBody = document.getElementById('recBody');
+const recWrap = document.getElementById('recWrap');
+const recEmpty = document.getElementById('recEmpty');
+const recCond = document.getElementById('recCond');
+const records = [];
+
+function chargeLabelText() {
+  return state.chargeType === 'negative' ? '(−)대전체' : state.chargeType === 'positive' ? '(+)대전체' : '중성';
+}
+function updateRecCond() {
+  const obj = state.compareMode
+    ? `${TEMPLATES[state.metalKey].label}·${TEMPLATES[state.nonMetalKey].label}`
+    : TEMPLATES[state.objectKey].label;
+  recCond.textContent = `지금 조건 — 물체: ${obj} / 대전체: ${chargeLabelText()} / 마찰 ${state.friction}회 / 거리 ${distanceVal.textContent}`;
+}
+function renderRecords() {
+  recBody.innerHTML = '';
+  records.forEach((r, i)=>{
+    const tr = document.createElement('tr');
+    tr.className = 'border-t border-slate-200';
+    tr.innerHTML = `<td class="py-1.5">${r.obj}</td><td class="py-1.5">${r.charge}</td>` +
+      `<td class="py-1.5">${r.dist}</td><td class="py-1.5 font-bold text-indigo-700">${r.result}</td>` +
+      `<td class="py-1.5 text-right"><button data-del="${i}" class="rec-del text-slate-400 font-bold px-1">×</button></td>`;
+    recBody.appendChild(tr);
+  });
+  recWrap.classList.toggle('hidden', records.length === 0);
+  recEmpty.classList.toggle('hidden', records.length > 0);
+  recBody.querySelectorAll('.rec-del').forEach(b=>
+    b.addEventListener('click', ()=>{ records.splice(+b.dataset.del, 1); renderRecords(); }));
+}
+document.querySelectorAll('.rec-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    if (records.length >= 10) records.shift();
+    records.push({
+      obj: state.compareMode ? `${TEMPLATES[state.metalKey].label}·${TEMPLATES[state.nonMetalKey].label}` : TEMPLATES[state.objectKey].label,
+      charge: chargeLabelText(),
+      dist: distanceVal.textContent,
+      result: btn.dataset.rec
+    });
+    renderRecords();
+  });
+});
+document.getElementById('recPrint').addEventListener('click', ()=>{
+  if (!records.length) { alert('먼저 실험 결과를 기록해 주세요!'); return; }
+  const rows = records.map((r,i)=>`<tr><td>${i+1}</td><td>${r.obj}</td><td>${r.charge}</td><td>${r.dist}</td><td>${r.result}</td></tr>`).join('');
+  const w = window.open('', '_blank');
+  w.document.write(`<html><head><meta charset="utf-8"><title>실험 결과 기록</title><style>
+    @page{size:A4;margin:12mm;} body{font-family:'Noto Sans KR',sans-serif;}
+    h1{font-size:18px;} table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+    th,td{border:1px solid #cbd5e1;padding:7px;text-align:left;} th{background:#f1f5f9;}
+    .n{margin-top:16px;font-size:12px;color:#475569;}</style></head><body>
+    <h1>정전기 유도 가상 실험실 — 실험 결과 기록</h1>
+    <p style="font-size:13px;">이름: ____________　학번: ________　날짜: ____________</p>
+    <table><thead><tr><th>번호</th><th>물체</th><th>대전체</th><th>거리</th><th>결과</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="n">알게 된 점:</p><p style="border-bottom:1px solid #94a3b8;height:26px;"></p>
+    <p style="border-bottom:1px solid #94a3b8;height:26px;"></p>
+    <p style="border-bottom:1px solid #94a3b8;height:26px;"></p>
+    </body></html>`);
+  w.document.close(); w.focus(); w.print();
+});
 
 /* ---------------- 시작 ---------------- */
 selectObject('can');
 setCharge('negative');
 updateFrictionLabel();
 updateDistanceLabel();
+resetPrediction();
+updateRecCond();
+renderRecords();
 animate();
 </script>
 </body>
