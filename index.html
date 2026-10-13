@@ -131,7 +131,7 @@
 
     <!-- 비금속 안내 배지 -->
     <div id="nonMetalBadge" class="hidden absolute top-14 sm:top-16 left-1/2 -translate-x-1/2 z-10 glass-dark rounded-full px-3 py-1.5 text-[11px] sm:text-xs font-bold text-amber-300">
-      ⚠️ 비금속(부도체)은 정전기 유도가 일어나지 않아요
+      ⚠️ 비금속(부도체)은 자유전자가 거의 없어 정전기 유도가 일어나지 않아요
     </div>
 
     <div id="svgWrap" class="w-full h-full flex items-center justify-center pt-14 pb-20 px-2">
@@ -262,9 +262,17 @@
           <p class="font-bold text-sm text-red-700 mb-1">🔴 (+)대전체가 가까이 오면</p>
           <p class="text-[12.5px] sm:text-xs text-slate-700 leading-relaxed">인력으로 자유전자가 <b>가까운 쪽</b>으로 끌려감 → 가까운 쪽 <b class="text-blue-600">(−)</b>, 먼 쪽 <b class="text-red-500">(+)</b> → 인력 발생 → 물체가 끌려옴</p>
         </div>
+        <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-3.5">
+          <p class="font-bold text-sm text-emerald-700 mb-1">⚖️ 꼭 기억하기 — 전자의 개수는 변하지 않아요!</p>
+          <p class="text-[12.5px] sm:text-xs text-slate-700 leading-relaxed">정전기 유도에서 금속 속 전자는 <b>새로 생기거나 없어지지 않아요.</b> 단지 <b>위치만 한쪽으로 치우칠</b> 뿐이에요. 그래서 한쪽이 (+), 반대쪽이 (−)를 띠어도 <b>물체 전체로 보면 여전히 중성</b>입니다. 또 <b>중성</b>이란 전하가 없다는 뜻이 아니라, <b>(+)와 (−)가 같은 수만큼 고르게 섞여 있다</b>는 뜻이에요.</p>
+        </div>
+        <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3.5">
+          <p class="font-bold text-sm text-amber-700 mb-1">🧤 문지르는 횟수를 늘리면?</p>
+          <p class="text-[12.5px] sm:text-xs text-slate-700 leading-relaxed">문지르는 것은 <b>대전체</b>의 전하량을 바꿔요. (−)대전체는 문지를수록 전자를 <b>더 많이 얻어</b> <b class="text-blue-600">(−)</b>가 많아지고, (+)대전체는 전자를 <b>더 많이 잃어</b> <b class="text-red-500">(+)</b>가 많아져요. 대전체의 전하량이 클수록 금속 속 전자를 밀거나 당기는 힘이 세져서 정전기 유도도 더 뚜렷해집니다.</p>
+        </div>
         <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3.5">
-          <p class="font-bold text-sm mb-1">🪵 비금속(부도체)은 왜 안 끌려올까?</p>
-          <p class="text-[12.5px] sm:text-xs text-slate-600 leading-relaxed">유리컵, 스티로폼 컵 같은 비금속은 자유롭게 움직이는 전자가 거의 없어서, 대전체를 가까이 해도 전하가 이동하지 못해요. 그래서 정전기 유도가 일어나지 않고 끌려오지 않습니다.</p>
+          <p class="font-bold text-sm mb-1">🪵 비금속(부도체)은 왜 다를까?</p>
+          <p class="text-[12.5px] sm:text-xs text-slate-600 leading-relaxed">유리컵, 스티로폼 컵 같은 비금속은 전자가 원자에 묶여 있어 <b>물체를 가로질러 자유롭게 이동하지 못해요.</b> 그래서 금속처럼 한쪽 끝이 (+), 반대쪽 끝이 (−)로 뚜렷하게 나뉘는 정전기 유도가 일어나지 않습니다.</p>
         </div>
         <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3.5">
           <p class="font-bold text-sm mb-1">📏 끌려오는 정도는?</p>
@@ -288,10 +296,10 @@
 
         <div id="quiz2" class="bg-white border-2 border-slate-200 rounded-2xl p-3.5">
           <p class="text-xs font-bold text-indigo-600 mb-1">Q2</p>
-          <p class="text-[13px] sm:text-sm font-semibold mb-3 leading-relaxed">(−)전하를 띤 막대를 <b>유리컵</b>에 아주 가까이 가져갔다. 이때 일어나는 현상으로 옳은 것은?</p>
+          <p class="text-[13px] sm:text-sm font-semibold mb-3 leading-relaxed">(−)전하를 띤 막대를 <b>유리컵</b>에 아주 가까이 가져갔다. 금속 캔과 비교했을 때의 설명으로 옳은 것은?</p>
           <div class="space-y-2" data-quiz="2">
-            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">① 캔처럼 끌려온다</button>
-            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="true">② 자유전자가 거의 없어 끌려오지 않는다</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">① 캔과 똑같이 한쪽 끝이 (+), 반대쪽 끝이 (−)로 뚜렷하게 나뉜다</button>
+            <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="true">② 자유전자가 거의 없어 캔과 같은 정전기 유도가 일어나지 않는다</button>
             <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">③ 유리컵이 반대 방향으로 밀려난다</button>
             <button class="quiz-opt w-full text-left text-[12.5px] sm:text-sm px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">④ 유리컵 전체가 (+)로 대전된다</button>
           </div>
@@ -485,18 +493,36 @@ function makeChargeIcon(sign, r) {
 
 /* ---------------- 대전체 아이콘 ---------------- */
 const rodIconsLayer = document.getElementById('rodChargeIcons');
+
+function addRodIcon(sign, y) {
+  const g = el('g', { transform:`translate(0,${y})` });
+  g.appendChild(el('circle', { r:8, fill: sign==='−' ? '#2563eb' : '#dc2626', stroke:'#fff', 'stroke-width':1.3 }));
+  const t = el('text', { 'text-anchor':'middle', 'dominant-baseline':'central', fill:'#fff', 'font-size':10, 'font-weight':'800' });
+  t.textContent = sign;
+  g.appendChild(t);
+  rodIconsLayer.appendChild(g);
+}
+
+/* 대전체에 표시되는 전하 개수 = 마찰 횟수(전하량).
+   - 중성: (+)와 (−)를 같은 개수로 번갈아 표시 → "중성 = 전하가 없다"는 오개념 방지
+   - (−)대전체: 문지를수록 전자를 더 많이 얻으므로 (−) 개수가 늘어남
+   - (+)대전체: 문지를수록 전자를 더 많이 잃으므로 (+) 개수가 늘어남            */
 function renderRodIcons() {
   rodIconsLayer.innerHTML = '';
-  if (state.chargeType === 'neutral') return;
+  const Y_TOP = 85, Y_BOTTOM = 370;
+
+  if (state.chargeType === 'neutral') {
+    // 중성 물체도 내부에는 (+)와 (−)가 같은 수만큼 들어 있다
+    const ys = [110, 160, 210, 260, 310, 355];
+    ys.forEach((y, i)=> addRodIcon(i % 2 === 0 ? '+' : '−', y));
+    return;
+  }
+
   const sign = state.chargeType === 'negative' ? '−' : '+';
-  [95,150,205,260,315,365].forEach(y=>{
-    const g = el('g', { transform:`translate(0,${y})` });
-    g.appendChild(el('circle', { r:8, fill: sign==='−' ? '#2563eb' : '#dc2626', stroke:'#fff', 'stroke-width':1.3 }));
-    const t = el('text', { 'text-anchor':'middle', 'dominant-baseline':'central', fill:'#fff', 'font-size':10, 'font-weight':'800' });
-    t.textContent = sign;
-    g.appendChild(t);
-    rodIconsLayer.appendChild(g);
-  });
+  const n = Math.max(1, Math.min(10, state.friction));
+  if (n === 1) { addRodIcon(sign, (Y_TOP + Y_BOTTOM) / 2); return; }
+  const step = (Y_BOTTOM - Y_TOP) / (n - 1);
+  for (let i = 0; i < n; i++) addRodIcon(sign, Y_TOP + step * i);
 }
 
 function makeCalloutLabel(x, y, text, color) {
@@ -614,7 +640,11 @@ function fillSlider(slider) {
   const pct = ((val - min) / (max - min)) * 100;
   slider.style.background = `linear-gradient(90deg,#818cf8 0%,#4f46e5 ${pct}%,#e2e8f0 ${pct}%,#e2e8f0 100%)`;
 }
-function updateFrictionLabel(){ frictionVal.textContent = state.friction + '회'; fillSlider(frictionSlider); }
+function updateFrictionLabel(){
+  frictionVal.textContent = state.friction + '회';
+  fillSlider(frictionSlider);
+  renderRodIcons();   // 마찰 횟수에 따라 대전체의 전하 개수를 다시 그린다
+}
 function updateDistanceLabel(){
   const d = state.distance;
   distanceVal.textContent = d < 20 ? '매우 가까움' : d < 45 ? '가까움' : d < 70 ? '보통' : '멀리';
@@ -690,7 +720,7 @@ document.querySelectorAll('[data-quiz]').forEach(wrapEl=>{
       if (wrapEl.dataset.quiz === '1') {
         explain.textContent = (correct?'🎉 정답이에요! ':'🙂 아쉬워요! ') + '(−)대전체가 가까워지면 척력으로 전자가 먼 쪽으로 밀려나 가까운 쪽은 (+), 먼 쪽은 (−)가 됩니다.';
       } else if (wrapEl.dataset.quiz === '2') {
-        explain.textContent = (correct?'🎉 정답이에요! ':'🙂 아쉬워요! ') + '유리컵은 비금속(부도체)이라 자유전자가 거의 없어요. 전하가 이동할 수 없어서 정전기 유도가 일어나지 않고, 대전체와 인력도 생기지 않아 끌려오지 않습니다.';
+        explain.textContent = (correct?'🎉 정답이에요! ':'🙂 아쉬워요! ') + '유리컵은 비금속(부도체)이라 전자가 원자에 묶여 있어 물체를 가로질러 이동하지 못해요. 그래서 금속 캔처럼 한쪽 끝이 (+), 반대쪽 끝이 (−)로 뚜렷하게 나뉘는 정전기 유도가 일어나지 않습니다.';
       } else {
         explain.textContent = (correct?'🎉 정답이에요! 심화 개념까지 이해했네요! ':'🙂 아쉬워요! ') + '(+)대전체가 가까워지면 인력으로 자유전자가 가까운 쪽(A)으로 끌려와 A는 전자가 많아져 (−)를, 전자가 부족해진 먼 쪽(B)은 (+)를 띠어요. 이 상태에서 막대를 치우지 않고 두 조각으로 쪼개어 떼어 놓으면, 각 조각이 그 전하를 그대로 유지한 채 분리되어 A는 (−), B는 (+)로 대전됩니다. (정전기 유도에 의한 대전)';
       }
@@ -714,8 +744,8 @@ function updateGuideAndStatus(mag) {
 
   if (!tpl.metal) {
     if (strong) {
-      guideBubble.textContent = `🚫 ${objName}은 비금속(부도체)이라 자유전자가 거의 없어서, 대전체를 가까이 해도 끌려오지 않아요!`;
-      statusText.textContent = `${objName}은 전자가 자유롭게 이동하지 못하는 부도체예요. 정전기 유도가 일어나지 않아 대전체와 인력이 생기지 않습니다.`;
+      guideBubble.textContent = `🚫 ${objName}은 비금속(부도체)이라 자유전자가 거의 없어요. 전하가 물체를 가로질러 이동하지 못해 금속과 같은 정전기 유도가 일어나지 않습니다.`;
+      statusText.textContent = `${objName} 속 전자는 원자에 묶여 있어 물체 전체를 가로질러 이동하지 못해요. 그래서 금속처럼 한쪽 끝이 (+), 반대쪽 끝이 (−)로 뚜렷하게 나뉘는 정전기 유도가 일어나지 않습니다.`;
     } else {
       guideBubble.textContent = `대전체를 ${objName} 쪽으로 가까이 가져가 보세요. 금속일 때와 어떻게 다를까요?`;
       statusText.textContent = `${objName}은 비금속(부도체)이에요. 앞서 살펴본 금속 물체와 비교하며 관찰해 보세요.`;
@@ -728,20 +758,25 @@ function updateGuideAndStatus(mag) {
   }
 
   if (!strong) {
-    guideBubble.textContent = '⚪ 대전체가 멀리 있거나 중성이라 변화가 거의 없어요.';
-    statusText.textContent = `대전체와 ${objName} 사이에 작용하는 힘이 거의 없습니다.`;
+    if (state.chargeType === 'neutral') {
+      guideBubble.textContent = `⚪ 대전되지 않은 물체는 (+)와 (−)를 같은 수만큼 가지고 있어요. 그래서 ${objName} 속 전자를 밀거나 당기지 못해 정전기 유도가 일어나지 않습니다.`;
+      statusText.textContent = `대전체가 중성이라 ${objName} 속 자유전자를 한쪽으로 밀거나 당기는 힘이 없어요. 전자가 고르게 퍼져 있어 물체의 양쪽 모두 (+)와 (−)가 균형을 이룬 중성 상태입니다.`;
+    } else {
+      guideBubble.textContent = '⚪ 대전체가 멀리 있어 전자를 밀거나 당기는 힘이 약해요. 가까이 가져가 보세요!';
+      statusText.textContent = `대전체가 멀리 있어 ${objName} 속 자유전자가 거의 이동하지 않아요. (+)와 (−)가 고르게 섞여 있는 중성 상태입니다.`;
+    }
     nearChargeText.textContent = '중성'; farChargeText.textContent = '중성';
     nearChargeText.className = 'sum-num text-slate-700 mt-0.5';
     farChargeText.className = 'sum-num text-slate-700 mt-0.5';
   } else if (state.chargeType === 'negative') {
     guideBubble.textContent = `⚡ (−)대전체가 가까워져 ${objName} 속 전자가 먼 쪽으로 밀려납니다!`;
-    statusText.textContent = `척력에 의해 ${objName} 속 자유전자가 먼 쪽으로 이동해요. 가까운 쪽은 (+)를, 먼 쪽은 (−)를 띠며, 가까운 쪽과 대전체 사이에 인력이 작용해 끌려옵니다.`;
+    statusText.textContent = `척력에 의해 ${objName} 속 자유전자가 먼 쪽으로 이동해요. 전자의 개수는 그대로이고 위치만 치우쳐서, 전자가 부족해진 가까운 쪽은 (+)를, 전자가 몰린 먼 쪽은 (−)를 띱니다. 가까운 쪽과 대전체 사이에 인력이 작용해 끌려와요.`;
     nearChargeText.textContent = '(+)'; farChargeText.textContent = '(−)';
     nearChargeText.className = 'sum-num text-red-500 mt-0.5';
     farChargeText.className = 'sum-num text-blue-600 mt-0.5';
   } else {
     guideBubble.textContent = `⚡ (+)대전체가 가까워져 ${objName} 속 전자가 가까운 쪽으로 끌려갑니다!`;
-    statusText.textContent = `인력에 의해 ${objName} 속 자유전자가 가까운 쪽으로 이동해요. 가까운 쪽은 (−)를, 먼 쪽은 (+)를 띠며, 가까운 쪽과 대전체 사이에 인력이 작용해 끌려옵니다.`;
+    statusText.textContent = `인력에 의해 ${objName} 속 자유전자가 가까운 쪽으로 이동해요. 전자의 개수는 그대로이고 위치만 치우쳐서, 전자가 몰린 가까운 쪽은 (−)를, 전자가 부족해진 먼 쪽은 (+)를 띱니다. 가까운 쪽과 대전체 사이에 인력이 작용해 끌려와요.`;
     nearChargeText.textContent = '(−)'; farChargeText.textContent = '(+)';
     nearChargeText.className = 'sum-num text-blue-600 mt-0.5';
     farChargeText.className = 'sum-num text-red-500 mt-0.5';
