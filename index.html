@@ -308,13 +308,13 @@
 
         <div id="quiz3" class="bg-white border-2 border-purple-200 rounded-2xl p-3.5">
           <p class="text-[13.5px] font-bold text-indigo-600 mb-1 flex items-center gap-1.5">Q3 <span class="text-[12px] font-bold text-purple-600 bg-purple-100 rounded-full px-2 py-0.5">심화</span></p>
-          <p class="text-[14.5px] sm:text-[15.5px] font-semibold mb-2 leading-relaxed">위 실험실에서 <b>알루미늄 캔</b>을 고르고, 마찰 횟수와 거리를 똑같이 맞춘 채 <b>(−)대전체</b>와 <b>(+)대전체</b>를 번갈아 선택해 비교해 보자. 두 경우를 관찰한 결과로 옳은 것은?</p>
-          <p class="text-[13px] sm:text-[13.5px] text-purple-700 bg-purple-50 border border-purple-200 rounded-lg px-2.5 py-1.5 mb-3 leading-relaxed">🧪 <b>직접 해보기</b> — '전자 이동 보기'를 켜고, 캔 속 전자가 어느 쪽으로 움직이는지와 캔이 끌려오는지 밀려나는지를 함께 살펴보세요.</p>
+          <p class="text-[14.5px] sm:text-[15.5px] font-semibold mb-2 leading-relaxed">위 실험실에서 <b>알루미늄 캔</b>을 고른 뒤, <b>마찰 횟수와 거리는 건드리지 말고</b> 대전체 종류만 아래 순서대로 바꾸며 캔 속 전자를 관찰해 보자. 관찰 결과로 옳은 것은?</p>
+          <p class="text-[13px] sm:text-[13.5px] text-purple-700 bg-purple-50 border border-purple-200 rounded-lg px-2.5 py-1.5 mb-3 leading-relaxed">🧪 <b>직접 해보기</b> — '전자 이동 보기'와 '전하 표시' 를 켜고, <b>중성 → (−)대전체 → 중성 → (+)대전체</b> 순서로 눌러 보세요. 중성으로 되돌릴 때마다 전자가 어떻게 되는지도 꼭 함께 보세요. (대전체를 캔 쪽으로 더 가까이 끌어다 놓으면 훨씬 뚜렷하게 보여요!)</p>
           <div class="space-y-2" data-quiz="3">
-            <button class="quiz-opt w-full text-left text-[14px] sm:text-[15.5px] px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">① (−)대전체일 때만 끌려오고, (+)대전체일 때는 밀려난다</button>
-            <button class="quiz-opt w-full text-left text-[14px] sm:text-[15.5px] px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="true">② 두 경우 모두 끌려오지만, 캔 속 전자가 이동하는 방향은 서로 반대다</button>
-            <button class="quiz-opt w-full text-left text-[14px] sm:text-[15.5px] px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">③ 두 경우 모두 끌려오고, 전자가 이동하는 방향도 서로 같다</button>
-            <button class="quiz-opt w-full text-left text-[14px] sm:text-[15.5px] px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">④ (+)대전체일 때는 캔에 아무 변화가 없다</button>
+            <button class="quiz-opt w-full text-left text-[14px] sm:text-[15.5px] px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">① 중성으로 되돌려도 전자는 한쪽에 몰린 채 그대로 남아 있다</button>
+            <button class="quiz-opt w-full text-left text-[14px] sm:text-[15.5px] px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="true">② 중성으로 되돌리면 전자가 고르게 퍼지고, (−)와 (+)일 때는 전자가 서로 반대쪽으로 몰린다</button>
+            <button class="quiz-opt w-full text-left text-[14px] sm:text-[15.5px] px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">③ (−)와 (+) 모두에서 전자가 같은 쪽으로 몰린다</button>
+            <button class="quiz-opt w-full text-left text-[14px] sm:text-[15.5px] px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50" data-correct="false">④ (−)대전체일 때만 전자가 움직이고, (+)대전체일 때는 전혀 움직이지 않는다</button>
           </div>
           <p class="quiz-explain hidden mt-2 text-[13.5px] sm:text-[14.5px] bg-slate-50 rounded-lg p-2 text-slate-600 leading-relaxed"></p>
         </div>
@@ -721,7 +721,7 @@ document.querySelectorAll('[data-quiz]').forEach(wrapEl=>{
       } else if (wrapEl.dataset.quiz === '2') {
         explain.textContent = (correct?'🎉 정답이에요! ':'🙂 아쉬워요! ') + '유리컵은 비금속(부도체)이라 전자가 원자에 묶여 있어 물체를 가로질러 이동하지 못해요. 그래서 금속 캔처럼 한쪽 끝이 (+), 반대쪽 끝이 (−)로 뚜렷하게 나뉘는 정전기 유도가 일어나지 않습니다.';
       } else {
-        explain.textContent = (correct?'🎉 정답이에요! 두 경우를 제대로 비교했네요! ':'🙂 아쉬워요! 실험실에서 (−)와 (+)를 번갈아 눌러 다시 관찰해 보세요! ') + '(−)대전체는 척력으로 전자를 먼 쪽으로 밀어내고, (+)대전체는 인력으로 전자를 가까운 쪽으로 끌어당겨요. 즉 전자가 이동하는 방향은 서로 반대입니다. 하지만 어느 쪽이든 대전체와 가까운 쪽에는 항상 대전체와 다른 종류의 전하가 생기므로, 두 경우 모두 캔은 끌려옵니다.';
+        explain.textContent = (correct?'🎉 정답이에요! 순서대로 잘 관찰했네요! ':'🙂 아쉬워요! 중성 → (−) → 중성 → (+) 순서로 다시 눌러 보세요! ') + '중성 대전체는 전자를 밀거나 당기지 않아서 전자가 캔 전체에 고르게 퍼져요. (−)대전체는 척력으로 전자를 먼 쪽으로 밀어내고, (+)대전체는 인력으로 전자를 가까운 쪽으로 끌어당기므로 전자가 몰리는 방향이 서로 반대입니다. 중성으로 되돌릴 때마다 전자가 다시 고르게 퍼지는 것은, 정전기 유도가 전자의 위치가 잠시 치우친 것일 뿐 캔이 대전된 것은 아니기 때문이에요.';
       }
     });
   });
