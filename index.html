@@ -220,11 +220,11 @@
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200">
-            <p class="text-[10.5px] text-slate-500 font-bold leading-tight">대전체와<br/>가까운 쪽</p>
+            <p class="text-[11px] text-slate-500 font-bold leading-tight whitespace-nowrap">대전체와 가까운 쪽</p>
             <p id="nearChargeText" class="sum-num text-slate-700 mt-0.5">중성</p>
           </div>
           <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200">
-            <p class="text-[10.5px] text-slate-500 font-bold leading-tight">대전체와<br/>먼 쪽</p>
+            <p class="text-[11px] text-slate-500 font-bold leading-tight whitespace-nowrap">대전체와 먼 쪽</p>
             <p id="farChargeText" class="sum-num text-slate-700 mt-0.5">중성</p>
           </div>
         </div>
@@ -546,16 +546,23 @@ function selectObject(key) {
     current.pairs = [];
     for (let i=0;i<tpl.count;i++) {
       const p0 = tpl.samplePoint();
+      // 전자의 '중성 휴식 위치'는 원자핵(+)과 완전히 겹치지 않도록 살짝 옆으로 띄운다.
+      // (겹쳐 그리면 중성 상태에서 (+)가 (−)에 가려 "항상 (−)만 있는 것처럼" 보이는 과학적 오개념을 유발함)
+      const restAngle = rand(0, Math.PI*2);
+      const restR = 11;
       const pair = {
         baseX:p0.x, baseY:p0.y, curX:p0.x, curY:p0.y,
+        restX: p0.x + Math.cos(restAngle)*restR,
+        restY: p0.y + Math.sin(restAngle)*restR,
         nearTarget: { x: tpl.bbox.nearX, y: p0.y + rand(-8,8) },
         farTarget:  { x: tpl.bbox.farX,  y: p0.y + rand(-8,8) }
       };
+      pair.curX = pair.restX; pair.curY = pair.restY;
       const nucleus = makeChargeIcon('+', 10);
       nucleus.setAttribute('transform', `translate(${pair.baseX},${pair.baseY})`);
       chargeLayer.appendChild(nucleus);
       const electron = makeChargeIcon('−', 9);
-      electron.setAttribute('transform', `translate(${pair.baseX},${pair.baseY})`);
+      electron.setAttribute('transform', `translate(${pair.restX},${pair.restY})`);
       chargeLayer.appendChild(electron);
       pair.electronEl = electron;
       current.pairs.push(pair);
@@ -769,8 +776,8 @@ function animate() {
     const towardNear = state.chargeType === 'positive';
     current.pairs.forEach(p=>{
       const tgt = towardNear ? p.nearTarget : p.farTarget;
-      p.curX += ((p.baseX + (tgt.x - p.baseX) * dispMagnitude) - p.curX) * 0.22;
-      p.curY += ((p.baseY + (tgt.y - p.baseY) * dispMagnitude) - p.curY) * 0.22;
+      p.curX += ((p.restX + (tgt.x - p.restX) * dispMagnitude) - p.curX) * 0.22;
+      p.curY += ((p.restY + (tgt.y - p.restY) * dispMagnitude) - p.curY) * 0.22;
       p.electronEl.setAttribute('transform', `translate(${p.curX},${p.curY})`);
       p.electronEl.setAttribute('opacity', state.showElectrons ? 1 : 0);
     });
