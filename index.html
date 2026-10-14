@@ -106,8 +106,11 @@
 <div class="w-full min-h-screen flex flex-col lg:h-screen">
 <div class="flex-1 w-full min-h-0 flex flex-col lg:flex-row lg:overflow-hidden bg-slate-100">
 
-  <!-- ===================== MAIN VIEW (dark lab) ===================== -->
-  <div class="relative w-full h-[38vh] sm:h-[50vh] min-h-[240px] max-h-[520px] lg:max-h-none lg:h-full lg:w-[60%] lab-bg overflow-hidden">
+  <!-- ===================== 왼쪽: 실험 화면 + 조작부 ===================== -->
+  <div class="w-full lg:w-[58%] lg:h-full flex flex-col lg:min-h-0">
+
+    <!-- 실험 화면 -->
+  <div class="relative w-full h-[38vh] sm:h-[50vh] min-h-[240px] max-h-[520px] lg:max-h-none lg:h-auto lg:flex-1 lg:min-h-0 lab-bg overflow-hidden">
 
     <!-- Header -->
     <div class="absolute top-0 left-0 right-0 z-20 flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 glass-dark">
@@ -207,11 +210,96 @@
     </div>
   </div>
 
-  <!-- ===================== RIGHT PANEL ===================== -->
-  <div class="w-full lg:w-[40%] lg:h-full flex flex-col bg-white lg:overflow-hidden">
+    <!-- CONTROL PANEL — 실험 화면 바로 아래(데스크톱에서는 2열로 압축) -->
+    <div class="shrink-0 border-t-2 border-slate-200 bg-slate-50 p-2.5 sm:p-3 lg:overflow-y-auto scrollbar-thin">
+      <div class="space-y-2 sm:space-y-2.5 lg:grid lg:grid-cols-2 lg:gap-x-5 lg:gap-y-0 lg:space-y-0 lg:items-start">
+        <div class="space-y-2 sm:space-y-2.5">
+
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <p class="text-[15px] font-bold text-slate-700">🔬 관찰할 물체 선택</p>
+          <label class="toggle shrink-0">
+            <input id="compareToggle" type="checkbox" />
+            <span class="track"><span class="thumb"></span></span>
+            <span class="ml-2 text-[13.5px] font-bold text-indigo-700 whitespace-nowrap">금속·비금속 비교</span>
+          </label>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button data-obj="can" class="obj-card active flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
+            <span class="text-2xl">🥫</span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-[15px] font-bold text-slate-800">알루미늄 캔</span>
+              <span class="inline-block mt-0.5 text-[13px] font-bold text-indigo-700 bg-indigo-100 rounded-full px-2 py-0.5">금속</span>
+            </span>
+          </button>
+          <button data-obj="ball" class="obj-card flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
+            <span class="text-2xl">⚙️</span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-[15px] font-bold text-slate-800">쇠구슬</span>
+              <span class="inline-block mt-0.5 text-[13px] font-bold text-indigo-700 bg-indigo-100 rounded-full px-2 py-0.5">금속</span>
+            </span>
+          </button>
+          <button data-obj="glass" class="obj-card flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
+            <span class="text-2xl">🥛</span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-[15px] font-bold text-slate-800">유리컵</span>
+              <span class="inline-block mt-0.5 text-[13px] font-bold text-slate-600 bg-slate-200 rounded-full px-2 py-0.5">비금속</span>
+            </span>
+          </button>
+          <button data-obj="foam" class="obj-card flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
+            <span class="text-2xl">🧊</span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-[15px] font-bold text-slate-800">스티로폼 컵</span>
+              <span class="inline-block mt-0.5 text-[13px] font-bold text-slate-600 bg-slate-200 rounded-full px-2 py-0.5">비금속</span>
+            </span>
+          </button>
+        </div>
+      </div>
+        </div>
+        <div class="space-y-2 sm:space-y-2.5">
+      <div class="flex gap-2">
+        <button id="chargeNegBtn" class="charge-chip active-neg flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 bg-white whitespace-nowrap">⚫ (−)대전체</button>
+        <button id="chargePosBtn" class="charge-chip flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">🔴 (+)대전체</button>
+        <button id="chargeNeuBtn" class="charge-chip flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">⚪ 중성</button>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center text-[15px] sm:text-[16px] font-bold text-slate-700 mb-2">
+          <span>🧤 마찰 횟수 (전하량)</span><span id="frictionVal" class="text-indigo-600">5회</span>
+        </div>
+        <input id="frictionSlider" type="range" min="1" max="10" value="5" />
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center text-[15px] sm:text-[16px] font-bold text-slate-700 mb-2">
+          <span>📏 대전체와의 거리</span><span id="distanceVal" class="text-indigo-600">보통</span>
+        </div>
+        <input id="distanceSlider" type="range" min="0" max="100" value="60" />
+        <p class="text-[13.5px] text-slate-500 mt-1">※ 대전체를 화면에서 직접 좌우로 드래그해도 거리가 조절돼요.</p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <label class="toggle">
+          <input id="electronToggle" type="checkbox" checked />
+          <span class="track"><span class="thumb"></span></span>
+          <span class="ml-2 text-[15px] font-semibold text-slate-700 whitespace-nowrap">전자 이동 보기</span>
+        </label>
+        <label class="toggle">
+          <input id="chargeLabelToggle" type="checkbox" checked />
+          <span class="track"><span class="thumb"></span></span>
+          <span class="ml-2 text-[15px] font-semibold text-slate-700 whitespace-nowrap">전하 표시(+/−) 보기</span>
+        </label>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 오른쪽: 관찰 · 원리 · 퀴즈 (조작하면서 함께 확인) ============ -->
+  <div class="w-full lg:w-[42%] lg:h-full flex flex-col bg-white lg:overflow-hidden lg:min-h-0">
 
     <!-- Tabs -->
-    <div class="readable-area order-2 lg:order-1 shrink-0 flex gap-1 p-1.5 m-2 mb-0 rounded-xl bg-slate-100">
+    <div class="readable-area shrink-0 flex gap-1 p-1.5 m-2 mb-0 rounded-xl bg-slate-100">
       <button data-tab="guide" class="tab-btn active flex-1 py-2 rounded-lg text-[13.5px] sm:text-[15.5px] font-bold flex items-center justify-center gap-1">
         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><line x1="15" y1="15" x2="20" y2="20"/></svg>
         관찰
@@ -227,7 +315,7 @@
     </div>
 
     <!-- Tab contents -->
-    <div class="readable-area order-3 lg:order-2 lg:flex-1 lg:overflow-y-auto scrollbar-thin p-3 sm:p-4 space-y-3">
+    <div class="readable-area lg:flex-1 lg:overflow-y-auto scrollbar-thin p-3 sm:p-4 space-y-3">
 
       <!-- GUIDE TAB -->
       <div id="tab-guide" class="space-y-3">
@@ -245,32 +333,35 @@
           <button id="predictReset" class="hidden mt-2 text-[13px] font-bold text-sky-700 underline">다시 예상하기</button>
         </div>
 
-        <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-3.5">
-          <p class="text-[13.5px] font-bold text-indigo-600 mb-1">현재 상태</p>
-          <p id="statusText" class="text-[14.5px] sm:text-[15.5px] font-semibold text-slate-800 leading-relaxed">대전되지 않은 물체가 가까이 있어요. 아무 변화가 없습니다.</p>
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200">
-            <p class="text-[12.5px] sm:text-[13px] text-slate-500 font-bold leading-tight whitespace-nowrap">대전체와 가까운 쪽</p>
-            <p id="nearChargeText" class="sum-num text-slate-700 mt-0.5">중성</p>
+        <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-3.5 space-y-2.5">
+          <div>
+            <p class="text-[13.5px] font-bold text-indigo-600 mb-1">현재 상태</p>
+            <p id="statusText" class="text-[14.5px] sm:text-[15.5px] font-semibold text-slate-800 leading-relaxed">대전되지 않은 물체가 가까이 있어요. 아무 변화가 없습니다.</p>
           </div>
-          <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200">
-            <p class="text-[12.5px] sm:text-[13px] text-slate-500 font-bold leading-tight whitespace-nowrap">대전체와 먼 쪽</p>
-            <p id="farChargeText" class="sum-num text-slate-700 mt-0.5">중성</p>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="bg-white/80 rounded-xl px-3 py-2 border border-indigo-100">
+              <p class="text-[12.5px] sm:text-[13px] text-slate-500 font-bold leading-tight whitespace-nowrap">대전체와 가까운 쪽</p>
+              <p id="nearChargeText" class="sum-num text-slate-700 mt-0.5">중성</p>
+            </div>
+            <div class="bg-white/80 rounded-xl px-3 py-2 border border-indigo-100">
+              <p class="text-[12.5px] sm:text-[13px] text-slate-500 font-bold leading-tight whitespace-nowrap">대전체와 먼 쪽</p>
+              <p id="farChargeText" class="sum-num text-slate-700 mt-0.5">중성</p>
+            </div>
+          </div>
+          <div>
+            <p class="text-[13.5px] text-slate-600 font-bold mb-1.5">인력의 세기</p>
+            <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+              <div id="angleBar" class="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-150" style="width:0%"></div>
+            </div>
           </div>
         </div>
-        <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200">
-          <p class="text-[13.5px] text-slate-600 font-bold mb-1.5">인력의 세기</p>
-          <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-            <div id="angleBar" class="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-150" style="width:0%"></div>
-          </div>
-        </div>
+
         <!-- 간단 활동 기록 -->
-        <div class="bg-white border-2 border-slate-200 rounded-2xl p-3.5">
-          <div class="flex items-center justify-between gap-2 mb-1.5">
-            <p class="text-[14px] font-bold text-slate-700">📝 실험 결과 기록</p>
+        <details class="bg-white border-2 border-slate-200 rounded-2xl p-3.5" open>
+          <summary class="flex items-center justify-between gap-2 mb-1.5 cursor-pointer list-none">
+            <span class="text-[14px] font-bold text-slate-700">📝 실험 결과 기록</span>
             <button id="recPrint" class="text-[13px] font-bold text-indigo-700 underline">인쇄</button>
-          </div>
+          </summary>
           <p id="recCond" class="text-[13.5px] text-slate-500 mb-2 leading-relaxed"></p>
           <div class="grid grid-cols-3 gap-1.5">
             <button data-rec="끌려옴" class="rec-btn text-[13.5px] font-bold py-2 rounded-xl border-2 border-slate-300 bg-white hover:bg-slate-50">끌려옴</button>
@@ -287,10 +378,11 @@
             </table>
           </div>
           <p id="recEmpty" class="text-[13px] text-slate-400 mt-2">실험한 뒤 위에서 결과를 선택하면 한 줄씩 기록돼요.</p>
-        </div>
-        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-[13.5px] sm:text-[14.5px] text-amber-800 leading-relaxed">
-          💡 <b>선생님 Tip</b> — 대전체를 물체 쪽으로 드래그해서 가까이 가져가 보세요! 금속 물체와 비금속 물체를 번갈아 선택하면서 반응이 다른 까닭을 비교해 보세요.
-        </div>
+        </details>
+        <details class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-[13.5px] sm:text-[14.5px] text-amber-800 leading-relaxed">
+          <summary class="font-bold cursor-pointer list-none">💡 선생님 Tip <span class="text-[12px] font-normal">(눌러서 열기)</span></summary>
+          <span class="block mt-1.5"> 대전체를 물체 쪽으로 드래그해서 가까이 가져가 보세요! 금속 물체와 비금속 물체를 번갈아 선택하면서 반응이 다른 까닭을 비교해 보세요.</span>
+        </details>
       </div>
 
       <!-- SUMMARY TAB -->
@@ -366,84 +458,6 @@
       </div>
     </div>
 
-    <!-- CONTROL PANEL (태블릿·모바일에서는 실험 화면 바로 아래) -->
-    <div class="order-1 lg:order-3 shrink-0 border-t-2 border-b-2 lg:border-b-0 border-slate-100 bg-slate-50 p-2.5 sm:p-3 space-y-2 sm:space-y-2.5 lg:overflow-y-auto scrollbar-thin lg:max-h-[58%]">
-
-      <div>
-        <div class="flex items-center justify-between gap-2 mb-2">
-          <p class="text-[15px] font-bold text-slate-700">🔬 관찰할 물체 선택</p>
-          <label class="toggle shrink-0">
-            <input id="compareToggle" type="checkbox" />
-            <span class="track"><span class="thumb"></span></span>
-            <span class="ml-2 text-[13.5px] font-bold text-indigo-700 whitespace-nowrap">금속·비금속 비교</span>
-          </label>
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <button data-obj="can" class="obj-card active flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
-            <span class="text-2xl">🥫</span>
-            <span class="flex-1 min-w-0">
-              <span class="block text-[15px] font-bold text-slate-800">알루미늄 캔</span>
-              <span class="inline-block mt-0.5 text-[13px] font-bold text-indigo-700 bg-indigo-100 rounded-full px-2 py-0.5">금속</span>
-            </span>
-          </button>
-          <button data-obj="ball" class="obj-card flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
-            <span class="text-2xl">⚙️</span>
-            <span class="flex-1 min-w-0">
-              <span class="block text-[15px] font-bold text-slate-800">쇠구슬</span>
-              <span class="inline-block mt-0.5 text-[13px] font-bold text-indigo-700 bg-indigo-100 rounded-full px-2 py-0.5">금속</span>
-            </span>
-          </button>
-          <button data-obj="glass" class="obj-card flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
-            <span class="text-2xl">🥛</span>
-            <span class="flex-1 min-w-0">
-              <span class="block text-[15px] font-bold text-slate-800">유리컵</span>
-              <span class="inline-block mt-0.5 text-[13px] font-bold text-slate-600 bg-slate-200 rounded-full px-2 py-0.5">비금속</span>
-            </span>
-          </button>
-          <button data-obj="foam" class="obj-card flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
-            <span class="text-2xl">🧊</span>
-            <span class="flex-1 min-w-0">
-              <span class="block text-[15px] font-bold text-slate-800">스티로폼 컵</span>
-              <span class="inline-block mt-0.5 text-[13px] font-bold text-slate-600 bg-slate-200 rounded-full px-2 py-0.5">비금속</span>
-            </span>
-          </button>
-        </div>
-      </div>
-
-      <div class="flex gap-2">
-        <button id="chargeNegBtn" class="charge-chip active-neg flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 bg-white whitespace-nowrap">⚫ (−)대전체</button>
-        <button id="chargePosBtn" class="charge-chip flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">🔴 (+)대전체</button>
-        <button id="chargeNeuBtn" class="charge-chip flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">⚪ 중성</button>
-      </div>
-
-      <div>
-        <div class="flex justify-between items-center text-[15px] sm:text-[16px] font-bold text-slate-700 mb-2">
-          <span>🧤 마찰 횟수 (전하량)</span><span id="frictionVal" class="text-indigo-600">5회</span>
-        </div>
-        <input id="frictionSlider" type="range" min="1" max="10" value="5" />
-      </div>
-
-      <div>
-        <div class="flex justify-between items-center text-[15px] sm:text-[16px] font-bold text-slate-700 mb-2">
-          <span>📏 대전체와의 거리</span><span id="distanceVal" class="text-indigo-600">보통</span>
-        </div>
-        <input id="distanceSlider" type="range" min="0" max="100" value="60" />
-        <p class="text-[13.5px] text-slate-500 mt-1">※ 대전체를 화면에서 직접 좌우로 드래그해도 거리가 조절돼요.</p>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
-        <label class="toggle">
-          <input id="electronToggle" type="checkbox" checked />
-          <span class="track"><span class="thumb"></span></span>
-          <span class="ml-2 text-[15px] font-semibold text-slate-700 whitespace-nowrap">전자 이동 보기</span>
-        </label>
-        <label class="toggle">
-          <input id="chargeLabelToggle" type="checkbox" checked />
-          <span class="track"><span class="thumb"></span></span>
-          <span class="ml-2 text-[15px] font-semibold text-slate-700 whitespace-nowrap">전하 표시(+/−) 보기</span>
-        </label>
-      </div>
-    </div>
   </div>
 </div>
 
