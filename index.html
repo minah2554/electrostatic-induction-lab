@@ -98,6 +98,15 @@
   .sum-num { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:clamp(22px,5.5vw,34px); line-height:1.15; }
   .f-wm { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:15px; color:#0f766e; letter-spacing:.01em; }
   /* 관찰·원리·퀴즈 탭은 가독성을 위해 나눔스퀘어라운드로 */
+  /* 작은 화면(폰·태블릿 세로)에서 그림이 화면 높이를 넘지 않도록(폰 가로 대비) */
+  @media (max-width: 1023px) { #scene { max-height: 64vh !important; } }
+  @media (max-width: 640px) {
+    #objectLabel, #objectLabel2 { font-size: 26px; }
+    #rodLabel { font-size: 24px; }
+    #attractLabel { font-size: 24px; }
+    #eMoveLabel { font-size: 21px; }
+    #rodGroup > text:last-child { font-size: 18px; }
+  }
   .readable-area, .readable-area * { font-family:'NanumSquareRound','Noto Sans KR',sans-serif !important; }
 </style>
 </head>
@@ -110,7 +119,7 @@
   <div class="w-full lg:w-[63%] lg:h-full flex flex-col lg:min-h-0">
 
     <!-- 실험 화면 -->
-  <div class="relative w-full h-[38vh] sm:h-[50vh] min-h-[240px] max-h-[520px] lg:max-h-none lg:h-auto lg:flex-1 lg:min-h-0 lab-bg overflow-hidden">
+  <div id="labView" class="relative w-full lg:flex-1 lg:min-h-0 lab-bg overflow-hidden flex flex-col">
 
     <!-- Header -->
     <div class="absolute top-0 left-0 right-0 z-20 flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 lg:py-1.5 glass-dark">
@@ -137,8 +146,8 @@
       ⚠️ 비금속(부도체)은 자유전자가 거의 없어 정전기 유도가 일어나지 않아요
     </div>
 
-    <div id="svgWrap" class="w-full h-full flex items-center justify-center pt-[80px] sm:pt-20 pb-24 sm:pb-24 lg:pt-[58px] lg:pb-1 px-2">
-      <svg id="scene" viewBox="0 22 760 390" class="w-full h-full" style="max-width:100%;max-height:100%;">
+    <div id="svgWrap" class="w-full lg:flex-1 lg:min-h-0 flex items-center justify-center pt-[76px] pb-1 px-1 sm:px-2">
+      <svg id="scene" viewBox="70 22 660 390" preserveAspectRatio="xMidYMid meet" class="w-full h-auto lg:h-full" style="max-width:100%;max-height:100%;overflow:visible;">
         <defs>
           <linearGradient id="metalGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#f8fafc"/>
@@ -205,7 +214,7 @@
     </div>
 
     <!-- Guide bubble -->
-    <div id="guideBubble" class="lg:hidden slide-in absolute left-2 right-2 sm:left-4 sm:right-4 bottom-2 sm:bottom-4 glass-bubble rounded-2xl px-4 py-3 shadow-xl text-[14px] sm:text-[15.5px] font-semibold text-slate-100 leading-relaxed" style="word-break:keep-all;">
+    <div id="guideBubble" class="lg:hidden slide-in relative z-10 mx-2 sm:mx-4 mb-2 sm:mb-3 glass-bubble rounded-2xl px-4 py-3 shadow-xl text-[14px] sm:text-[15.5px] font-semibold text-slate-100 leading-relaxed" style="word-break:keep-all;">
       👋 물체와 대전체 종류를 선택하고, 거리를 조절해서 전자가 어떻게 움직이는지 관찰해 보세요!
     </div>
   </div>
@@ -598,10 +607,12 @@ function renderRodIcons() {
 }
 
 function makeCalloutLabel(x, y, text, color) {
-  const g = el('g', { transform:`translate(${x},${y})` });
-  const w = text.length * 9.5 + 20;
-  g.appendChild(el('rect', { x:-w/2, y:-16, width:w, height:29, rx:14.5, fill:'#0f172a', stroke:color, 'stroke-width':2 }));
-  const t = el('text', { x:0, y:1, 'text-anchor':'middle', 'dominant-baseline':'central', fill:color, 'font-size':14, 'font-weight':'800' });
+  // 폰처럼 그림이 작게 축소되는 화면에서는 전하 표시 글자를 키워 읽히게 한다
+  const k = window.innerWidth <= 640 ? 1.45 : 1;
+  const g = el('g', { transform:`translate(${x},${y - (k>1 ? 6 : 0)})` });
+  const w = (text.length * 9.5 + 20) * k;
+  g.appendChild(el('rect', { x:-w/2, y:-16*k, width:w, height:29*k, rx:14.5*k, fill:'#0f172a', stroke:color, 'stroke-width':2 }));
+  const t = el('text', { x:0, y:1, 'text-anchor':'middle', 'dominant-baseline':'central', fill:color, 'font-size':14*k, 'font-weight':'800' });
   t.textContent = text;
   g.appendChild(t);
   return g;
@@ -1151,6 +1162,16 @@ document.getElementById('recPrint').addEventListener('click', ()=>{
   w.document.close(); w.focus(); w.print();
 });
 
+/* ---------------- 화면 크기 자동 맞춤 ---------------- */
+function fitLayout() {
+  const hdr = document.querySelector('#labView > .glass-dark') || document.querySelector('.glass-dark');
+  const wrap = document.getElementById('svgWrap');
+  if (hdr && wrap) wrap.style.paddingTop = (hdr.offsetHeight + 4) + 'px';
+}
+window.addEventListener('resize', fitLayout);
+window.addEventListener('orientationchange', ()=>setTimeout(fitLayout, 150));
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLayout);
+
 /* ---------------- 시작 ---------------- */
 selectObject('can');
 setCharge('negative');
@@ -1159,6 +1180,7 @@ updateDistanceLabel();
 resetPrediction();
 updateRecCond();
 renderRecords();
+fitLayout();
 animate();
 </script>
 </body>
