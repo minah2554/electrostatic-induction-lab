@@ -133,12 +133,12 @@
     </div>
 
     <!-- 비금속 안내 배지 -->
-    <div id="nonMetalBadge" class="hidden absolute top-[88px] sm:top-[84px] left-1/2 max-w-[92%] text-center -translate-x-1/2 z-10 glass-dark rounded-full px-3 py-1.5 text-[12.5px] sm:text-[14.5px] font-bold text-amber-300">
+    <div id="nonMetalBadge" class="hidden absolute top-[88px] sm:top-[84px] lg:top-[64px] left-1/2 max-w-[92%] text-center -translate-x-1/2 z-10 glass-dark rounded-full px-3 py-1.5 text-[12.5px] sm:text-[14.5px] font-bold text-amber-300">
       ⚠️ 비금속(부도체)은 자유전자가 거의 없어 정전기 유도가 일어나지 않아요
     </div>
 
-    <div id="svgWrap" class="w-full h-full flex items-center justify-center pt-[80px] sm:pt-20 pb-24 sm:pb-24 px-2">
-      <svg id="scene" viewBox="0 0 760 420" class="w-full h-full" style="max-width:100%;max-height:100%;">
+    <div id="svgWrap" class="w-full h-full flex items-center justify-center pt-[80px] sm:pt-20 pb-24 sm:pb-24 lg:pt-[68px] lg:pb-1 px-2">
+      <svg id="scene" viewBox="0 22 760 390" class="w-full h-full" style="max-width:100%;max-height:100%;">
         <defs>
           <linearGradient id="metalGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#f8fafc"/>
@@ -205,7 +205,7 @@
     </div>
 
     <!-- Guide bubble -->
-    <div id="guideBubble" class="slide-in absolute left-2 right-2 sm:left-4 sm:right-4 bottom-2 sm:bottom-4 glass-bubble rounded-2xl px-4 py-3 shadow-xl text-[14px] sm:text-[15.5px] font-semibold text-slate-100 leading-relaxed" style="word-break:keep-all;">
+    <div id="guideBubble" class="lg:hidden slide-in absolute left-2 right-2 sm:left-4 sm:right-4 bottom-2 sm:bottom-4 glass-bubble rounded-2xl px-4 py-3 shadow-xl text-[14px] sm:text-[15.5px] font-semibold text-slate-100 leading-relaxed" style="word-break:keep-all;">
       👋 물체와 대전체 종류를 선택하고, 거리를 조절해서 전자가 어떻게 움직이는지 관찰해 보세요!
     </div>
   </div>
@@ -226,28 +226,28 @@
         </div>
         <div class="grid grid-cols-2 gap-2">
           <button data-obj="can" class="obj-card active flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
-            <span class="text-2xl">🥫</span>
+            <span class="text-2xl lg:text-xl">🥫</span>
             <span class="flex-1 min-w-0">
               <span class="block text-[15px] font-bold text-slate-800">알루미늄 캔</span>
               <span class="inline-block mt-0.5 text-[13px] font-bold text-indigo-700 bg-indigo-100 rounded-full px-2 py-0.5">금속</span>
             </span>
           </button>
           <button data-obj="ball" class="obj-card flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
-            <span class="text-2xl">⚙️</span>
+            <span class="text-2xl lg:text-xl">⚙️</span>
             <span class="flex-1 min-w-0">
               <span class="block text-[15px] font-bold text-slate-800">쇠구슬</span>
               <span class="inline-block mt-0.5 text-[13px] font-bold text-indigo-700 bg-indigo-100 rounded-full px-2 py-0.5">금속</span>
             </span>
           </button>
           <button data-obj="glass" class="obj-card flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
-            <span class="text-2xl">🥛</span>
+            <span class="text-2xl lg:text-xl">🥛</span>
             <span class="flex-1 min-w-0">
               <span class="block text-[15px] font-bold text-slate-800">유리컵</span>
               <span class="inline-block mt-0.5 text-[13px] font-bold text-slate-600 bg-slate-200 rounded-full px-2 py-0.5">비금속</span>
             </span>
           </button>
           <button data-obj="foam" class="obj-card flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border-2 border-slate-200 bg-white text-left">
-            <span class="text-2xl">🧊</span>
+            <span class="text-2xl lg:text-xl">🧊</span>
             <span class="flex-1 min-w-0">
               <span class="block text-[15px] font-bold text-slate-800">스티로폼 컵</span>
               <span class="inline-block mt-0.5 text-[13px] font-bold text-slate-600 bg-slate-200 rounded-full px-2 py-0.5">비금속</span>
@@ -255,29 +255,6 @@
           </button>
         </div>
       </div>
-        </div>
-        <div class="space-y-2 sm:space-y-2.5">
-      <div class="flex gap-2">
-        <button id="chargeNegBtn" class="charge-chip active-neg flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 bg-white whitespace-nowrap">⚫ (−)대전체</button>
-        <button id="chargePosBtn" class="charge-chip flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">🔴 (+)대전체</button>
-        <button id="chargeNeuBtn" class="charge-chip flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">⚪ 중성</button>
-      </div>
-
-      <div>
-        <div class="flex justify-between items-center text-[15px] sm:text-[16px] font-bold text-slate-700 mb-2">
-          <span>🧤 마찰 횟수 (전하량)</span><span id="frictionVal" class="text-indigo-600">5회</span>
-        </div>
-        <input id="frictionSlider" type="range" min="1" max="10" value="5" />
-      </div>
-
-      <div>
-        <div class="flex justify-between items-center text-[15px] sm:text-[16px] font-bold text-slate-700 mb-2">
-          <span>📏 대전체와의 거리</span><span id="distanceVal" class="text-indigo-600">보통</span>
-        </div>
-        <input id="distanceSlider" type="range" min="0" max="100" value="60" />
-        <p class="text-[13.5px] text-slate-500 mt-1">※ 대전체를 화면에서 직접 좌우로 드래그해도 거리가 조절돼요.</p>
-      </div>
-
       <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
         <label class="toggle">
           <input id="electronToggle" type="checkbox" checked />
@@ -290,6 +267,29 @@
           <span class="ml-2 text-[15px] font-semibold text-slate-700 whitespace-nowrap">전하 표시(+/−) 보기</span>
         </label>
       </div>
+        </div>
+        <div class="space-y-2 sm:space-y-2.5">
+      <div class="flex gap-2">
+        <button id="chargeNegBtn" class="charge-chip active-neg flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 bg-white whitespace-nowrap">⚫ (−)대전체</button>
+        <button id="chargePosBtn" class="charge-chip flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">🔴 (+)대전체</button>
+        <button id="chargeNeuBtn" class="charge-chip flex-1 text-[14.5px] sm:text-[15.5px] font-bold py-2 sm:py-2.5 rounded-xl border-2 border-slate-300 bg-white whitespace-nowrap">⚪ 중성</button>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center text-[15px] sm:text-[16px] font-bold text-slate-700 mb-2 lg:mb-1">
+          <span>🧤 마찰 횟수 (전하량)</span><span id="frictionVal" class="text-indigo-600">5회</span>
+        </div>
+        <input id="frictionSlider" type="range" min="1" max="10" value="5" />
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center text-[15px] sm:text-[16px] font-bold text-slate-700 mb-2 lg:mb-1">
+          <span>📏 대전체와의 거리</span><span id="distanceVal" class="text-indigo-600">보통</span>
+        </div>
+        <input id="distanceSlider" type="range" min="0" max="100" value="60" />
+        <p class="lg:hidden text-[13.5px] text-slate-500 mt-1">※ 대전체를 화면에서 직접 좌우로 드래그해도 거리가 조절돼요.</p>
+      </div>
+
         </div>
       </div>
     </div>
@@ -462,7 +462,7 @@
 </div>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer class="shrink-0 bg-white border-t border-slate-200 text-center py-2.5 px-3" style="word-break:keep-all;">
+  <footer class="shrink-0 bg-white border-t border-slate-200 text-center py-2.5 lg:py-1.5 px-3" style="word-break:keep-all;">
     <p class="text-[12.5px] text-slate-500">© <span id="footYear">2026</span> MINARI STUDIO. 정전기 유도 가상 실험실 <span id="appVersion">v1.1.6</span>, All rights reserved.</p>
   </footer>
 </div>
@@ -644,7 +644,7 @@ const sceneTop = document.getElementById('sceneTop');
 const sceneBottom = document.getElementById('sceneBottom');
 const objectGroup2 = document.getElementById('objectGroup2');
 const objectLabel2 = document.getElementById('objectLabel2');
-const CMP = { s:0.78, tx:51.7, tyTop:-55.3, tyBottom:116.7 };
+const CMP = { s:0.78, tx:51.7, tyTop:-38, tyBottom:122 };
 
 function applySceneLayout() {
   const floor = document.getElementById('labFloor');
@@ -899,6 +899,7 @@ function updateGuideAndStatus(mag) {
   if (state.compareMode && strong) {
     const nm = TEMPLATES[state.nonMetalKey].label;
     guideBubble.textContent = `⚖️ 같은 대전체·같은 거리인데도 ${objName}(금속)은 끌려오고, ${nm}(비금속)은 변화가 없어요! 차이를 만드는 것은 '자유전자'입니다.`;
+    statusText.textContent = guideBubble.textContent + ` 금속 속 자유전자는 한쪽으로 이동하지만, 비금속은 전자가 원자에 묶여 있어 이동하지 못합니다.`;
   }
   angleBar.style.width = Math.round(mag*100) + '%';
 }
