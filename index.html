@@ -29,6 +29,13 @@
     font-weight: normal;
     font-display: swap;
   }
+  /* 배민 주아체 — 왼쪽 위 앱 제목 전용 */
+  @font-face {
+    font-family: 'Juache';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+  }
   * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
   html, body { margin:0; padding:0; font-family:'BcCardFont','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
     word-break: keep-all; overflow-wrap: break-word; background:#eef1f6; }
@@ -92,8 +99,8 @@
   }
 
   /* ===== 지정 폰트 스타일 (전체 BC카드체로 통일, 본문과 동일 폰트) ===== */
-  .app-title { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:20px; line-height:1.25; }
-  @media (max-width:420px) { .app-title { font-size:17px; } }
+  .app-title { font-family:'Juache','BcCardFont','Noto Sans KR',sans-serif; font-weight:400; font-size:21px; line-height:1.25; letter-spacing:0.01em; }
+  @media (max-width:420px) { .app-title { font-size:18px; } }
   .hero-title { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:28px; }
   .sum-num { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:clamp(22px,5.5vw,34px); line-height:1.15; }
   .f-wm { font-family:'BcCardFont','Noto Sans KR',sans-serif; font-weight:700; font-size:15px; color:#0f766e; letter-spacing:.01em; }
@@ -134,7 +141,7 @@
           </svg>
         </span>
         <div class="min-w-0">
-          <h1 class="app-title font-bold leading-tight text-white">정전기 유도 가상 실험실</h1>
+          <h1 class="app-title leading-tight text-white">정전기 유도 가상실험실</h1>
           <p class="text-[12px] sm:text-[12.5px] leading-tight text-slate-300">중2 과학 Ⅶ. 전기와 자기 · 전기를 띤 물체 근처에 가면?</p>
         </div>
       </div>
